@@ -1,0 +1,11 @@
+{
+  "name": "pv-components-catalogue",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Objectify, s.r.o.",
+  "license": "MIT",
+  "workspaces": [
+    "app/*",
+    "infra"
+  ]
+}

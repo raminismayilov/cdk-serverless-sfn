@@ -1,0 +1,22 @@
+*.js
+!infra/jest.config.js
+*.d.ts
+node_modules
+
+# production
+/build
+
+# CDK
+infra/cdk.out
+infra/.cdk.staging
+infra/cdk.context.json
+
+/.idea
+*.iml
+
+**/.env
+
+.aws-sam
+
+aws-toolkit-ts-output/
+aws-toolkit-tsconfig.json

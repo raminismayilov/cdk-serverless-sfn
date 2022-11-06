@@ -7,5 +7,9 @@
   "workspaces": [
     "app/*",
     "infra"
-  ]
+  ],
+  "scripts": {
+    "sam-start": "sam local start-lambda -t infra/cdk.out/InfraStack.template.json --profile pvc",
+    "sam-stop": "pkill -f 'sam local'"
+  }
 }

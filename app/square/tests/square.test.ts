@@ -1,7 +1,7 @@
 import { Lambda, InvokeCommandInput } from '@aws-sdk/client-lambda';
 import { fromUtf8, toUtf8 } from '@aws-sdk/util-utf8-node';
 
-describe('addition', () => {
+describe('square', () => {
     let lambda: Lambda;
 
     beforeAll(() => {
@@ -16,17 +16,17 @@ describe('addition', () => {
         });
     });
 
-    it('should return 3', async () => {
+    it('should return 16', async () => {
         const params: InvokeCommandInput = {
-            FunctionName: 'Addition',
+            FunctionName: 'Square',
             InvocationType: 'RequestResponse',
-            Payload: fromUtf8(JSON.stringify({a: 1, b: 2})),
+            Payload: fromUtf8(JSON.stringify({ sum: 4 })),
         };
 
         const result = await lambda.invoke(params);
         expect(result.StatusCode).toEqual(200);
 
         const { body } = JSON.parse(toUtf8(result.Payload!));
-        expect(body).toEqual(JSON.stringify({ sum: 3 }));
+        expect(body).toEqual(JSON.stringify({ result: 16 }));
     });
 });

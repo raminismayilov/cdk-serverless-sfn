@@ -4,7 +4,7 @@ import {
     aws_lambda as lambda,
 } from "aws-cdk-lib";
 import {
-    NodejsFunction, NodejsFunctionProps
+    NodejsFunction
 } from "aws-cdk-lib/aws-lambda-nodejs";
 import path from "path";
 
@@ -14,6 +14,11 @@ export class InfraStack extends cdk.Stack {
 
         const addition = new NodejsFunction(this, 'Addition', {
             entry: path.join(__dirname, '..', '..', 'app', 'addition', 'index.ts'),
+            runtime: lambda.Runtime.NODEJS_16_X,
+        });
+
+        const square = new NodejsFunction(this, 'Square', {
+            entry: path.join(__dirname, '..', '..', 'app', 'square', 'index.ts'),
             runtime: lambda.Runtime.NODEJS_16_X,
         });
     }

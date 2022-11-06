@@ -1,8 +1,8 @@
 export async function handler(event: any): Promise<any> {
     const { a, b } = event;
-    const result = a + b;
+    const sum = a + b;
     return {
         statusCode: 200,
-        body: JSON.stringify({ result }),
+        body: JSON.stringify({ sum }),
     }
 }

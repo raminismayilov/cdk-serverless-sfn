@@ -16,12 +16,12 @@ export class InfraStack extends cdk.Stack {
         super(scope, id, props);
 
         const addition = new NodejsFunction(this, 'Addition', {
-            entry: path.join(__dirname, '..', '..', 'app', 'addition', 'index.ts'),
+            entry: path.join(__dirname, '..', '..', 'app', 'addition', 'addition.ts'),
             runtime: lambda.Runtime.NODEJS_16_X,
         });
 
         const square = new NodejsFunction(this, 'Square', {
-            entry: path.join(__dirname, '..', '..', 'app', 'square', 'index.ts'),
+            entry: path.join(__dirname, '..', '..', 'app', 'square', 'square.ts'),
             runtime: lambda.Runtime.NODEJS_16_X,
         });
 

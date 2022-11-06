@@ -10,6 +10,10 @@
   ],
   "scripts": {
     "sam-start": "sam local start-lambda -t infra/cdk.out/InfraStack.template.json --profile pvc",
-    "sam-stop": "pkill -f 'sam local'"
+    "sam-stop": "pkill -f 'sam local'",
+    "sfn-start": "docker run -p 8083:8083 --env-file aws-stepfunctions-local-credentials.txt amazon/aws-stepfunctions-local"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1"
   }
 }

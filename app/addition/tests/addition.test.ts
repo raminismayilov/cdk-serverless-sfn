@@ -24,9 +24,8 @@ describe('addition', () => {
         };
 
         const result = await lambda.invoke(params);
-        expect(result.StatusCode).toEqual(200);
 
-        const { body } = JSON.parse(toUtf8(result.Payload!));
-        expect(body).toEqual(JSON.stringify({ sum: 3 }));
+        expect(result.StatusCode).toEqual(200);
+        expect(JSON.parse(toUtf8(result.Payload!))).toEqual({ sum: 3 });
     });
 });

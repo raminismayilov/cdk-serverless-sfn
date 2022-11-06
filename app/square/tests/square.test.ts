@@ -24,9 +24,8 @@ describe('square', () => {
         };
 
         const result = await lambda.invoke(params);
-        expect(result.StatusCode).toEqual(200);
 
-        const { body } = JSON.parse(toUtf8(result.Payload!));
-        expect(body).toEqual(JSON.stringify({ result: 16 }));
+        expect(result.StatusCode).toEqual(200);
+        expect(JSON.parse(toUtf8(result.Payload!))).toEqual({ result: 16 });
     });
 });

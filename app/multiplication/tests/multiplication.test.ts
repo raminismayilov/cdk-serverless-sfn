@@ -27,5 +27,5 @@ describe('multiplication', () => {
 
         expect(result.StatusCode).toEqual(200);
         expect(JSON.parse(toUtf8(result.Payload!))).toEqual({ product: 3 });
-    });
+    }, 10000);
 });

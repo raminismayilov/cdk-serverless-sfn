@@ -10,8 +10,10 @@
   ],
   "scripts": {
     "test": "jest",
+    "cdk:synth": "cd infra && cdk synth",
+    "cdk:bootstrap": "cd infra && cdk bootstrap",
     "sam-stop": "pkill -f 'sam local'",
-    "sam-start": "sam local start-lambda -t infra/cdk.out/InfraStack.template.json --profile pvc &",
+    "sam-start": "sam local start-lambda -t infra/cdk.out/InfraStack.template.json &",
     "sfn-start": "docker-compose up -d",
     "sfn-stop": "docker-compose down",
     "test:lambda": "npm run sam-start && npm run test app/multiplication/tests/multiplication.test.ts && npm run sam-stop",

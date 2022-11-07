@@ -48,6 +48,10 @@ describe('simple state machine', () => {
         stateMachineArn = createStateMachineCommandOutput.stateMachineArn!;
     });
 
+    afterAll(async () => {
+        await sfn.destroy();
+    });
+
     it('should return 144', async () => {
         const input: StartExecutionCommandInput = {
             stateMachineArn,

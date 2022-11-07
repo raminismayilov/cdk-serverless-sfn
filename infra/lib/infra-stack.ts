@@ -43,7 +43,7 @@ export class InfraStack extends cdk.Stack {
         });
 
         const waitStep = new sfn.Wait(this, 'Wait Step', {
-            time: sfn.WaitTime.duration(Duration.seconds(5)),
+            time: sfn.WaitTime.duration(Duration.seconds(3)),
         });
 
         const definition = additionStep.next(waitStep).next(squareStep);

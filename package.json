@@ -9,9 +9,13 @@
     "infra"
   ],
   "scripts": {
-    "sam-start": "sam local start-lambda -t infra/cdk.out/InfraStack.template.json --profile pvc",
+    "test": "jest",
     "sam-stop": "pkill -f 'sam local'",
-    "sfn-start": "docker run -p 8083:8083 --env-file aws-stepfunctions-local-credentials.txt amazon/aws-stepfunctions-local"
+    "sam-start": "sam local start-lambda -t infra/cdk.out/InfraStack.template.json --profile pvc &",
+    "sfn-start": "docker run --name stepfunctions -p 8083:8083 --env-file aws-stepfunctions-local-credentials.txt amazon/aws-stepfunctions-local &",
+    "sfn-stop": "docker rm --force stepfunctions",
+    "test:lambda": "npm run sam-start && npm run test app/multiplication/tests/multiplication.test.ts && npm run sam-stop",
+    "test:sfn": "npm run sam-start && npm run sfn-start && npm run test && npm run sam-stop && npm run sfn-stop"
   },
   "devDependencies": {
     "prettier": "^2.7.1"

@@ -25,6 +25,11 @@ export class InfraStack extends cdk.Stack {
             runtime: lambda.Runtime.NODEJS_16_X,
         });
 
+        const multiplication = new NodejsFunction(this, 'Multiplication', {
+            entry: path.join(__dirname, '..', '..', 'app', 'multiplication', 'multiplication.ts'),
+            runtime: lambda.Runtime.NODEJS_16_X,
+        });
+
         const additionStep = new tasks.LambdaInvoke(this, 'Addition Step', {
             lambdaFunction: addition,
             inputPath: '$',

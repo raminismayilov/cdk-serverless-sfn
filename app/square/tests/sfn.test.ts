@@ -4,10 +4,28 @@ import {
     StartExecutionCommandInput,
     DescribeExecutionCommand,
     DescribeExecutionCommandInput,
+    DescribeExecutionCommandOutput,
     CreateStateMachineCommand,
     CreateStateMachineCommandInput,
 } from '@aws-sdk/client-sfn';
 import stateMachineDefinition from '../../../asl-0.json';
+
+async function waitForSfnCompletion(sfn: SFNClient, executionArn: string): Promise<DescribeExecutionCommandOutput> {
+    const descriptionInput: DescribeExecutionCommandInput = {
+        executionArn: executionArn!,
+    };
+    const descriptionOutput = await sfn.send(new DescribeExecutionCommand(descriptionInput));
+
+    return new Promise((resolve) => {
+        if (descriptionOutput.status === 'SUCCEEDED') {
+            resolve(descriptionOutput);
+        } else {
+            setTimeout(() => {
+                resolve(waitForSfnCompletion(sfn, executionArn));
+            }, 1000);
+        }
+    })
+}
 
 describe('simple state machine', () => {
     let sfn: SFNClient;
@@ -39,17 +57,9 @@ describe('simple state machine', () => {
         const result = await sfn.send(new StartExecutionCommand(input));
         const executionArn = result.executionArn;
 
-        let describeResult;
-        let executionStatus = 'RUNNING';
-        while (executionStatus === 'RUNNING') {
-            const describeInput: DescribeExecutionCommandInput = {
-                executionArn: executionArn!,
-            };
-            describeResult = await sfn.send(new DescribeExecutionCommand(describeInput));
-            executionStatus = describeResult.status!;
-        }
+        const descriptionOutput: DescribeExecutionCommandOutput = await waitForSfnCompletion(sfn, executionArn!);
 
-        expect(executionStatus).toEqual('SUCCEEDED');
-        expect(describeResult?.output).toContain(JSON.stringify({ result: 144 }));
+        expect(descriptionOutput.status).toEqual('SUCCEEDED');
+        expect(descriptionOutput.output).toContain(JSON.stringify({ result: 144 }));
     }, 10000);
 });

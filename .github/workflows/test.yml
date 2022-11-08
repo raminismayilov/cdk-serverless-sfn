@@ -28,5 +28,12 @@ jobs:
       - uses: aws-actions/setup-sam@v2
       - name: Pull NodeJS16.X Emulation Image
         run: docker pull public.ecr.aws/sam/emulation-nodejs16.x:latest
+      - name: Download and extract SFN jar
+        run: wget https://s3.amazonaws.com/stepfunctionslocal/StepFunctionsLocal.zip && unzip StepFunctionsLocal.zip
       - name: Run Tests
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID}}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          AWS_DEFAULT_REGION: eu-central-1
+          LAMBDA_ENDPOINT: http://localhost:3001
         run: npm run test:sfn

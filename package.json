@@ -14,10 +14,12 @@
     "cdk:bootstrap": "cd infra && cdk bootstrap",
     "sam-stop": "pkill -f 'sam local'",
     "sam-start": "sam local start-lambda -t infra/cdk.out/InfraStack.template.json &",
+    "sfn-start-jar": "java -jar StepFunctionsLocal.jar --port 8083 &",
     "sfn-start": "docker-compose up -d",
     "sfn-stop": "docker-compose down",
     "test:lambda": "npm run sam-start && npm run test app/multiplication/tests/multiplication.test.ts && npm run sam-stop",
-    "test:sfn": "npm run sam-start && npm run sfn-start && npm run test && npm run sam-stop && npm run sfn-stop"
+    "test:sfn": "npm run sam-start && npm run sfn-start && npm run test",
+    "test:sfn-jar": "npm run sam-start && npm run sfn-start-jar && npm run test"
   },
   "devDependencies": {
     "prettier": "^2.7.1"

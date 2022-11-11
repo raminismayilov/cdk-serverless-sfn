@@ -7,8 +7,8 @@ phases:
       - npm install
   build:
     commands:
-      - cd infra
       - npm install
+      - cd infra
       - npm run cdk -- synth
 
 artifacts:

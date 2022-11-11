@@ -9,7 +9,7 @@
     "infra"
   ],
   "scripts": {
-    "test": "jest infra/test/*.test.ts",
+    "test": "jest infra/test/pipeline.test.ts",
     "cdk:synth": "cd infra && cdk synth",
     "cdk:bootstrap": "cd infra && cdk bootstrap",
     "sam-stop": "pkill -f 'sam local'",

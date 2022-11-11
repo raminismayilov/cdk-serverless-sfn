@@ -1,20 +1,23 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { Artifact, IStage, Pipeline } from "aws-cdk-lib/aws-codepipeline";
+import { Artifact, IStage, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
 import {
     CloudFormationCreateUpdateStackAction,
     CodeBuildAction,
     CodeBuildActionType,
     GitHubSourceAction,
-} from "aws-cdk-lib/aws-codepipeline-actions";
+} from 'aws-cdk-lib/aws-codepipeline-actions';
 import {
     BuildEnvironmentVariableType,
     BuildSpec,
     LinuxBuildImage,
     PipelineProject,
-} from "aws-cdk-lib/aws-codebuild";
+} from 'aws-cdk-lib/aws-codebuild';
 
 export class PipelineStack extends cdk.Stack {
+    private readonly pipeline: Pipeline;
+    private readonly buildOutput: Artifact;
+
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
@@ -39,27 +42,35 @@ export class PipelineStack extends cdk.Stack {
             actions: [sourceAction],
         });
 
-        const buildOutput = new Artifact('BuildOutput');
+        this.buildOutput = new Artifact('BuildOutput');
 
         const buildAction = new CodeBuildAction({
-            actionName: "PipelineBuild",
+            actionName: 'PipelineBuild',
             input: sourceOutput,
-            outputs: [buildOutput],
-            project: new PipelineProject(this, "BuildProject", {
+            outputs: [this.buildOutput],
+            project: new PipelineProject(this, 'BuildProject', {
                 environment: {
                     buildImage: LinuxBuildImage.STANDARD_5_0,
                 },
-                buildSpec: BuildSpec.fromSourceFilename(
-                    "infra/build-specs/build-spec.yml"
-                ),
+                buildSpec: BuildSpec.fromSourceFilename('infra/build-specs/build-spec.yml'),
             }),
         });
 
         pipeline.addStage({
-            stageName: "Build",
-            actions: [
-                buildAction,
-            ],
+            stageName: 'Build',
+            actions: [buildAction],
+        });
+
+        const pipelineUpdateAction = new CloudFormationCreateUpdateStackAction({
+            actionName: 'PipelineUpdate',
+            stackName: 'PipelineStack',
+            templatePath: this.buildOutput.atPath('PipelineStack.template.json'),
+            adminPermissions: true,
+        });
+
+        pipeline.addStage({
+            stageName: 'Update',
+            actions: [pipelineUpdateAction],
         });
     }
 }

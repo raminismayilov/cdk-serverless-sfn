@@ -29,6 +29,7 @@ export class PipelineStack extends cdk.Stack {
             actionName: 'PipelineSource',
             owner: 'raminismayilov',
             repo: 'cdk-serverless-sfn',
+            branch: 'master',
             oauthToken: cdk.SecretValue.secretsManager('github-token'),
             output: sourceOutput,
         });

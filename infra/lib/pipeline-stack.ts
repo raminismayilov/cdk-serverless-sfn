@@ -69,7 +69,7 @@ export class PipelineStack extends cdk.Stack {
         });
 
         pipeline.addStage({
-            stageName: 'Update',
+            stageName: 'Pipeline_Update',
             actions: [pipelineUpdateAction],
         });
     }

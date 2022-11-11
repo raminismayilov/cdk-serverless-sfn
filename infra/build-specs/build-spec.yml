@@ -8,8 +8,8 @@ phases:
   build:
     commands:
       - npm install
-      - cd infra
-      - npm run cdk -- synth
+      - npm run test
+      - npm run cdk:synth
 
 artifacts:
   base-directory: infra/cdk.out

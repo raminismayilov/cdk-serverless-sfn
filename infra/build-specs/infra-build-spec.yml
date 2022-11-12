@@ -4,11 +4,9 @@ phases:
   install:
     commands:
       - npm install -g npm
-      - npm install -g aws-cdk
       - npm install
   build:
     commands:
-      - npm install
       - npm run test:infra
       - npm run cdk:synth
 

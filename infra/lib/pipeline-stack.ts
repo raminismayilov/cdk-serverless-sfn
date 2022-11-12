@@ -15,12 +15,13 @@ import {
 } from 'aws-cdk-lib/aws-codebuild';
 
 export class PipelineStack extends cdk.Stack {
+    private readonly pipeline: Pipeline;
     private readonly buildOutput: Artifact;
 
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
-        const pipeline = new Pipeline(this, 'Pipeline', {
+        this.pipeline = new Pipeline(this, 'Pipeline', {
             pipelineName: 'MyPipeline',
             crossAccountKeys: false,
             restartExecutionOnUpdate: true,
@@ -37,7 +38,7 @@ export class PipelineStack extends cdk.Stack {
             output: sourceOutput,
         });
 
-        pipeline.addStage({
+        this.pipeline.addStage({
             stageName: 'Source',
             actions: [sourceAction],
         });
@@ -56,7 +57,7 @@ export class PipelineStack extends cdk.Stack {
             }),
         });
 
-        pipeline.addStage({
+        this.pipeline.addStage({
             stageName: 'Build',
             actions: [buildAction],
         });
@@ -68,9 +69,23 @@ export class PipelineStack extends cdk.Stack {
             adminPermissions: true,
         });
 
-        pipeline.addStage({
+        this.pipeline.addStage({
             stageName: 'Pipeline_Update',
             actions: [pipelineUpdateAction],
+        });
+    }
+
+    public addServiceStage(serviceStack: cdk.Stack, stageName: string) {
+        this.pipeline.addStage({
+            stageName,
+            actions: [
+                new CloudFormationCreateUpdateStackAction({
+                    actionName: 'ServiceUpdate',
+                    stackName: serviceStack.stackName,
+                    templatePath: this.buildOutput.atPath(`${serviceStack.stackName}.template.json`),
+                    adminPermissions: true,
+                }),
+            ]
         });
     }
 }

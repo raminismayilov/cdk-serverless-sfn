@@ -11,7 +11,7 @@ import {
 } from "aws-cdk-lib/aws-lambda-nodejs";
 import path from "path";
 
-export class InfraStack extends cdk.Stack {
+export class ComputeStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 

@@ -48,7 +48,7 @@ export class PipelineStack extends cdk.Stack {
             actionName: 'PipelineBuild',
             input: sourceOutput,
             outputs: [this.buildOutput],
-            project: new PipelineProject(this, 'InfrastructureBuildProject', {
+            project: new PipelineProject(this, 'BuildProject', {
                 environment: {
                     buildImage: LinuxBuildImage.STANDARD_5_0,
                 },

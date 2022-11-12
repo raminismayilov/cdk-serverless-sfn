@@ -10,7 +10,7 @@ Object {
     },
   },
   "Resources": Object {
-    "InfrastructureBuildProject8570F76B": Object {
+    "BuildProject097C5DB7": Object {
       "Properties": Object {
         "Artifacts": Object {
           "Type": "CODEPIPELINE",
@@ -28,7 +28,7 @@ Object {
         },
         "ServiceRole": Object {
           "Fn::GetAtt": Array [
-            "InfrastructureBuildProjectRole151242CA",
+            "BuildProjectRoleAA92C755",
             "Arn",
           ],
         },
@@ -39,7 +39,7 @@ Object {
       },
       "Type": "AWS::CodeBuild::Project",
     },
-    "InfrastructureBuildProjectRole151242CA": Object {
+    "BuildProjectRoleAA92C755": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -56,7 +56,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "InfrastructureBuildProjectRoleDefaultPolicy95860DE9": Object {
+    "BuildProjectRoleDefaultPolicy3E9F248C": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -78,7 +78,7 @@ Object {
                       },
                       ":logs:us-east-1:123456789012:log-group:/aws/codebuild/",
                       Object {
-                        "Ref": "InfrastructureBuildProject8570F76B",
+                        "Ref": "BuildProject097C5DB7",
                       },
                     ],
                   ],
@@ -93,7 +93,7 @@ Object {
                       },
                       ":logs:us-east-1:123456789012:log-group:/aws/codebuild/",
                       Object {
-                        "Ref": "InfrastructureBuildProject8570F76B",
+                        "Ref": "BuildProject097C5DB7",
                       },
                       ":*",
                     ],
@@ -120,7 +120,7 @@ Object {
                     },
                     ":codebuild:us-east-1:123456789012:report-group/",
                     Object {
-                      "Ref": "InfrastructureBuildProject8570F76B",
+                      "Ref": "BuildProject097C5DB7",
                     },
                     "-*",
                   ],
@@ -167,10 +167,10 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "InfrastructureBuildProjectRoleDefaultPolicy95860DE9",
+        "PolicyName": "BuildProjectRoleDefaultPolicy3E9F248C",
         "Roles": Array [
           Object {
-            "Ref": "InfrastructureBuildProjectRole151242CA",
+            "Ref": "BuildProjectRoleAA92C755",
           },
         ],
       },
@@ -286,7 +286,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "InfrastructureBuildProject8570F76B",
+                  "BuildProject097C5DB7",
                   "Arn",
                 ],
               },
@@ -362,7 +362,7 @@ Object {
                 },
                 "Configuration": Object {
                   "ProjectName": Object {
-                    "Ref": "InfrastructureBuildProject8570F76B",
+                    "Ref": "BuildProject097C5DB7",
                   },
                 },
                 "InputArtifacts": Array [

@@ -13,6 +13,7 @@ import {
     LinuxBuildImage,
     PipelineProject,
 } from 'aws-cdk-lib/aws-codebuild';
+import { BillingStack } from "./billing-stack";
 
 export class PipelineStack extends cdk.Stack {
     private readonly pipeline: Pipeline;
@@ -75,8 +76,8 @@ export class PipelineStack extends cdk.Stack {
         });
     }
 
-    public addServiceStage(serviceStack: cdk.Stack, stageName: string) {
-        this.pipeline.addStage({
+    public addServiceStage(serviceStack: cdk.Stack, stageName: string): IStage {
+        return this.pipeline.addStage({
             stageName,
             actions: [
                 new CloudFormationCreateUpdateStackAction({
@@ -87,5 +88,18 @@ export class PipelineStack extends cdk.Stack {
                 }),
             ]
         });
+    }
+
+    public addBillingStackToStage(billingStack: BillingStack, stage: IStage) {
+        stage.addAction(
+            new CloudFormationCreateUpdateStackAction({
+                actionName: "Billing_Update",
+                stackName: billingStack.stackName,
+                templatePath: this.buildOutput.atPath(
+                    `${billingStack.stackName}.template.json`
+                ),
+                adminPermissions: true,
+            })
+        );
     }
 }

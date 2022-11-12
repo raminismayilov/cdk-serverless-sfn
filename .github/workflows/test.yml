@@ -36,4 +36,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
           AWS_DEFAULT_REGION: eu-central-1
           LAMBDA_ENDPOINT: http://localhost:3001
-        run: npm run test:sfn-jar
+        run: npm run test:infra

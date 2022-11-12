@@ -11,23 +11,30 @@ import {
 } from "aws-cdk-lib/aws-lambda-nodejs";
 import path from "path";
 
+interface ComputeStackProps extends cdk.StackProps {
+    stageName: string;
+}
+
 export class ComputeStack extends cdk.Stack {
-    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props: ComputeStackProps) {
         super(scope, id, props);
 
         const addition = new NodejsFunction(this, 'Addition', {
             entry: path.join(__dirname, '..', '..', 'app', 'addition', 'addition.ts'),
             runtime: lambda.Runtime.NODEJS_16_X,
+            functionName: `${props?.stageName}-addition`,
         });
 
         const square = new NodejsFunction(this, 'Square', {
             entry: path.join(__dirname, '..', '..', 'app', 'square', 'square.ts'),
             runtime: lambda.Runtime.NODEJS_16_X,
+            functionName: `${props?.stageName}-square`,
         });
 
         const multiplication = new NodejsFunction(this, 'Multiplication', {
             entry: path.join(__dirname, '..', '..', 'app', 'multiplication', 'multiplication.ts'),
             runtime: lambda.Runtime.NODEJS_16_X,
+            functionName: `${props?.stageName}-multiplication`,
         });
 
         const additionStep = new tasks.LambdaInvoke(this, 'Addition Step', {
@@ -51,6 +58,7 @@ export class ComputeStack extends cdk.Stack {
         const simpleStateMachine = new sfn.StateMachine(this, 'Simple State Machine', {
             definition,
             timeout: Duration.minutes(5),
+            stateMachineName: `${props?.stageName}-simple-state-machine`,
         });
     }
 }

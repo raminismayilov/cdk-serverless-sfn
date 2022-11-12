@@ -11,7 +11,13 @@ const pipelineStack = new PipelineStack(app, 'PipelineStack', {
     env: { account: '670614417011', region: 'eu-central-1' },
 });
 
-const applicationStack = new ComputeStack(app, 'ComputeStack', {
+const computeStackTest = new ComputeStack(app, 'ComputeStackTest', {
+    stageName: 'Test',
+    env: { account: '670614417011', region: 'eu-central-1' },
+});
+
+const computeStackProd = new ComputeStack(app, 'ComputeStackProd', {
+    stageName: 'Prod',
     env: { account: '670614417011', region: 'eu-central-1' },
 });
 
@@ -20,5 +26,8 @@ const billingStack = new BillingStack(app, 'BillingStack', {
     emailAddress: 'ismayilov@objectify.sk',
 });
 
-const productionStage = pipelineStack.addServiceStage(applicationStack, 'Production');
+const testStage = pipelineStack.addServiceStage(computeStackTest, 'Test');
+const productionStage = pipelineStack.addServiceStage(computeStackProd, 'Production');
+
 pipelineStack.addBillingStackToStage(billingStack, productionStage);
+

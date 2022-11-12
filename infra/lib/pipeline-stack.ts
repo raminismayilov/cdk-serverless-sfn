@@ -15,7 +15,6 @@ import {
 } from 'aws-cdk-lib/aws-codebuild';
 
 export class PipelineStack extends cdk.Stack {
-    private readonly pipeline: Pipeline;
     private readonly buildOutput: Artifact;
 
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {

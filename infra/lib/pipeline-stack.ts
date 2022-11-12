@@ -24,12 +24,13 @@ export class PipelineStack extends cdk.Stack {
         const pipeline = new Pipeline(this, 'Pipeline', {
             pipelineName: 'MyPipeline',
             crossAccountKeys: false,
+            restartExecutionOnUpdate: true,
         });
 
         const sourceOutput = new Artifact('SourceOutput');
 
         const sourceAction = new GitHubSourceAction({
-            actionName: 'PipelineSource',
+            actionName: 'Source',
             owner: 'raminismayilov',
             repo: 'cdk-serverless-sfn',
             branch: 'master',

@@ -374,6 +374,7 @@ Object {
           "Type": "S3",
         },
         "Name": "MyPipeline",
+        "RestartExecutionOnUpdate": true,
         "RoleArn": Object {
           "Fn::GetAtt": Array [
             "PipelineRoleD68726F7",
@@ -397,7 +398,7 @@ Object {
                   "PollForSourceChanges": false,
                   "Repo": "cdk-serverless-sfn",
                 },
-                "Name": "PipelineSource",
+                "Name": "Source",
                 "OutputArtifacts": Array [
                   Object {
                     "Name": "SourceOutput",
@@ -793,7 +794,7 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "PipelineSourcePipelineSourceWebhookResource52EE763D": Object {
+    "PipelineSourceWebhookResourceD1089B44": Object {
       "Properties": Object {
         "Authentication": "GITHUB_HMAC",
         "AuthenticationConfiguration": Object {
@@ -806,7 +807,7 @@ Object {
           },
         ],
         "RegisterWithThirdParty": true,
-        "TargetAction": "PipelineSource",
+        "TargetAction": "Source",
         "TargetPipeline": Object {
           "Ref": "PipelineC660917D",
         },

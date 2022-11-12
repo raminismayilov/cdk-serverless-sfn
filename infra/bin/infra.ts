@@ -14,4 +14,4 @@ const applicationStack = new ComputeStack(app, 'ComputeStack', {
     env: { account: '670614417011', region: 'eu-central-1' },
 });
 
-pipelineStack.addServiceStage(applicationStack, 'ApplicationStage');
+pipelineStack.addServiceStage(applicationStack, 'Production');

@@ -9,7 +9,7 @@ phases:
   build:
     commands:
       - npm install
-      - npm run test
+      - npm run test:infra
       - npm run cdk:synth
 
 artifacts:

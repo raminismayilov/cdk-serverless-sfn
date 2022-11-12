@@ -16,3 +16,10 @@ artifacts:
   base-directory: infra/cdk.out
   files:
     - '**/*'
+
+reports:
+  jest_reports:
+    files:
+      - test-report.xml
+    file-format: JUNITXML
+    base-directory: infra/test-reports

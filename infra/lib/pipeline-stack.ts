@@ -15,8 +15,15 @@ import {
 } from 'aws-cdk-lib/aws-codebuild';
 import { BillingStack } from "./billing-stack";
 
+interface ServiceEndpoints {
+    multiplicationLambdaUrl: string;
+    additionLambdaUrl: string;
+    squareLambdaUrl: string;
+}
+
 export class PipelineStack extends cdk.Stack {
     private readonly pipeline: Pipeline;
+    private readonly sourceOutput: Artifact;
     private readonly buildOutput: Artifact;
 
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -28,7 +35,7 @@ export class PipelineStack extends cdk.Stack {
             restartExecutionOnUpdate: true,
         });
 
-        const sourceOutput = new Artifact('SourceOutput');
+        this.sourceOutput = new Artifact('SourceOutput');
 
         const sourceAction = new GitHubSourceAction({
             actionName: 'Source',
@@ -36,7 +43,7 @@ export class PipelineStack extends cdk.Stack {
             repo: 'cdk-serverless-sfn',
             branch: 'master',
             oauthToken: cdk.SecretValue.secretsManager('github-token'),
-            output: sourceOutput,
+            output: this.sourceOutput,
         });
 
         this.pipeline.addStage({
@@ -48,7 +55,7 @@ export class PipelineStack extends cdk.Stack {
 
         const buildAction = new CodeBuildAction({
             actionName: 'PipelineBuild',
-            input: sourceOutput,
+            input: this.sourceOutput,
             outputs: [this.buildOutput],
             project: new PipelineProject(this, 'BuildProject', {
                 environment: {
@@ -101,5 +108,38 @@ export class PipelineStack extends cdk.Stack {
                 adminPermissions: true,
             })
         );
+    }
+
+    public addServiceIntegrationTestToStage(stage: IStage, serviceEndpoints: ServiceEndpoints) {
+        stage.addAction(
+            new CodeBuildAction({
+                actionName: "Integration_Test",
+                input: this.sourceOutput,
+                project: new PipelineProject(this, "IntegrationTestProject", {
+                    environment: {
+                        buildImage: LinuxBuildImage.STANDARD_5_0,
+                    },
+                    buildSpec: BuildSpec.fromSourceFilename(
+                        "infra/build-specs/integration-test-build-spec.yml"
+                    ),
+                }),
+                environmentVariables: {
+                    MULTIPLICATION_LAMBDA_URL: {
+                        value: serviceEndpoints.multiplicationLambdaUrl,
+                        type: BuildEnvironmentVariableType.PLAINTEXT,
+                    },
+                    ADDITION_LAMBDA_URL: {
+                        value: serviceEndpoints.additionLambdaUrl,
+                        type: BuildEnvironmentVariableType.PLAINTEXT,
+                    },
+                    SQUARE_LAMBDA_URL: {
+                        value: serviceEndpoints.squareLambdaUrl,
+                        type: BuildEnvironmentVariableType.PLAINTEXT,
+                    }
+                },
+                type: CodeBuildActionType.TEST,
+                runOrder: 2,
+            })
+        )
     }
 }

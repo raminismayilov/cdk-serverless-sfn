@@ -12,6 +12,7 @@
     "test": "jest",
     "test:infra": "cd infra && npm run test",
     "test:infra-update": "cd infra && npm run test:update",
+    "test:app": "npm run test",
     "cdk:synth": "cd infra && cdk synth",
     "cdk:bootstrap": "cd infra && cdk bootstrap",
     "sam-stop": "pkill -f 'sam local'",

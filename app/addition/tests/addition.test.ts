@@ -7,7 +7,7 @@ describe('addition', () => {
     beforeAll(() => {
         lambda = new Lambda({
             region: 'eu-central-1',
-            endpoint: 'http://127.0.0.1:3001',
+            endpoint: process.env.ADDITION_LAMBDA_URL,
             runtime: 'nodejs16.x',
             credentials: {
                 accessKeyId: 'test',

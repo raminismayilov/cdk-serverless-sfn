@@ -36,10 +36,6 @@ export class ComputeStack extends cdk.Stack {
             functionName: `${props?.stageName}-multiplication`,
         });
 
-        const multiplicationFunctionUrl = multiplication.addFunctionUrl({
-            authType: lambda.FunctionUrlAuthType.NONE,
-        });
-
         const additionStep = new tasks.LambdaInvoke(this, 'Addition Step', {
             lambdaFunction: addition,
             inputPath: '$',

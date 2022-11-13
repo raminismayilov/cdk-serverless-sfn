@@ -12,7 +12,7 @@ describe('multiplication', () => {
             credentials: {
                 accessKeyId: 'test',
                 secretAccessKey: 'test',
-            }
+            },
         });
     });
 

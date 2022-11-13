@@ -14,9 +14,6 @@ interface ComputeStackProps extends cdk.StackProps {
 }
 
 export class ComputeStack extends cdk.Stack {
-    public readonly multiplicationLambdaUrl: string;
-    public readonly additionLambdaUrl: string;
-    public readonly squareLambdaUrl: string;
 
     constructor(scope: Construct, id: string, props: ComputeStackProps) {
         super(scope, id, props);
@@ -27,23 +24,11 @@ export class ComputeStack extends cdk.Stack {
             functionName: `${props?.stageName}-addition`,
         });
 
-        const additionFunctionUrl = addition.addFunctionUrl({
-            authType: lambda.FunctionUrlAuthType.NONE,
-        });
-
-        this.additionLambdaUrl = additionFunctionUrl.url;
-
         const square = new NodejsFunction(this, 'Square', {
             entry: path.join(__dirname, '..', '..', 'app', 'square', 'square.ts'),
             runtime: lambda.Runtime.NODEJS_16_X,
             functionName: `${props?.stageName}-square`,
         });
-
-        const squareFunctionUrl = square.addFunctionUrl({
-            authType: lambda.FunctionUrlAuthType.NONE,
-        });
-
-        this.squareLambdaUrl = squareFunctionUrl.url;
 
         const multiplication = new NodejsFunction(this, 'Multiplication', {
             entry: path.join(__dirname, '..', '..', 'app', 'multiplication', 'multiplication.ts'),
@@ -54,8 +39,6 @@ export class ComputeStack extends cdk.Stack {
         const multiplicationFunctionUrl = multiplication.addFunctionUrl({
             authType: lambda.FunctionUrlAuthType.NONE,
         });
-
-        this.multiplicationLambdaUrl = multiplicationFunctionUrl.url;
 
         const additionStep = new tasks.LambdaInvoke(this, 'Addition Step', {
             lambdaFunction: addition,

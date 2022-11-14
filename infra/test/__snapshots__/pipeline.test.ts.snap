@@ -67,7 +67,7 @@ Object {
                   "Version": "1",
                 },
                 "Configuration": Object {
-                  "EnvironmentVariables": "[{\\"name\\":\\"_PROJECT_CONFIG_HASH\\",\\"type\\":\\"PLAINTEXT\\",\\"value\\":\\"aa668318357c3cbb8bccfc809d84961d55650d5c3ef13658ed7b5454a9999180\\"}]",
+                  "EnvironmentVariables": "[{\\"name\\":\\"_PROJECT_CONFIG_HASH\\",\\"type\\":\\"PLAINTEXT\\",\\"value\\":\\"42a8e9617b2d6e9ec18b890a537d1c1abdc4a0f98c0b010a08709654e904e8ec\\"}]",
                   "ProjectName": Object {
                     "Ref": "PipelineBuildSynthCdkBuildProject6BEFA8E6",
                   },
@@ -228,6 +228,7 @@ Object {
   \\"phases\\": {
     \\"install\\": {
       \\"commands\\": [
+        \\"n 16\\",
         \\"node -v\\",
         \\"npm ci\\"
       ]

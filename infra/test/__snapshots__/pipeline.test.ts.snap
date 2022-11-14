@@ -67,7 +67,7 @@ Object {
                   "Version": "1",
                 },
                 "Configuration": Object {
-                  "EnvironmentVariables": "[{\\"name\\":\\"_PROJECT_CONFIG_HASH\\",\\"type\\":\\"PLAINTEXT\\",\\"value\\":\\"4888489a562bd1154888259e7e2b8f9663742652184f38abb4955a4391d83b85\\"}]",
+                  "EnvironmentVariables": "[{\\"name\\":\\"_PROJECT_CONFIG_HASH\\",\\"type\\":\\"PLAINTEXT\\",\\"value\\":\\"aa668318357c3cbb8bccfc809d84961d55650d5c3ef13658ed7b5454a9999180\\"}]",
                   "ProjectName": Object {
                     "Ref": "PipelineBuildSynthCdkBuildProject6BEFA8E6",
                   },
@@ -228,7 +228,6 @@ Object {
   \\"phases\\": {
     \\"install\\": {
       \\"commands\\": [
-        \\"n latest\\",
         \\"node -v\\",
         \\"npm ci\\"
       ]
@@ -241,7 +240,7 @@ Object {
     }
   },
   \\"artifacts\\": {
-    \\"base-directory\\": \\"cdk.out\\",
+    \\"base-directory\\": \\"infra/cdk.out\\",
     \\"files\\": [
       \\"**/*\\"
     ]

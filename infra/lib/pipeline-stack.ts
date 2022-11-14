@@ -37,12 +37,12 @@ export class PipelineStack extends cdk.Stack {
             version: 0.2,
             phases: {
                 install: {
-                    commands: ['n latest', 'node -v', 'npm ci'],
+                    commands: ['node -v', 'npm ci'],
                 },
                 build: {
                     commands: ['npm run test:infra', 'npm run cdk:synth']
-                }
-            }
+                },
+            },
         });
 
         const synthAction = new CodeBuildStep(`Synth`, {
@@ -51,6 +51,7 @@ export class PipelineStack extends cdk.Stack {
             }),
             partialBuildSpec: pipelineSpec,
             commands: [],
+            primaryOutputDirectory: "infra/cdk.out",
         });
 
         this.pipeline = new CodePipeline(this, 'Pipeline', {

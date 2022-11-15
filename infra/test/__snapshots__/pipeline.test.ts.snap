@@ -562,7 +562,7 @@ Object {
     },
     \\"build\\": {
       \\"commands\\": [
-        \\"cdk-assets --path \\\\\\"assembly-MyTestStack-Test/MyTestStackTestComputeStack17C8BDEB.assets.json\\\\\\" --verbose publish \\\\\\"6a614a4e15cb2e6e3a2adc8258a454a264ab621c1ac3d628031c93ac5ebd6cb8:123456789012-us-east-1\\\\\\"\\"
+        \\"cdk-assets --path \\\\\\"assembly-MyTestStack-Test/MyTestStackTestComputeStack17C8BDEB.assets.json\\\\\\" --verbose publish \\\\\\"88461d16f941fc7003407cdcae09a1f9bb3a1724432b296a7cf18e6ee2d56bd4:123456789012-us-east-1\\\\\\"\\"
       ]
     }
   }

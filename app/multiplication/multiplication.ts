@@ -4,6 +4,8 @@
  * @returns e.g. { Payload: { product: 3 } }
  */
 export async function handler(event: any): Promise<any> {
+    console.log("Received event:", JSON.stringify(event, null, 2));
+
     const body = JSON.parse(event.body);
     const { a, b } = body;
 

@@ -91,6 +91,9 @@ export class PipelineStack extends cdk.Stack {
             source,
             buildSpec: prSpec,
             concurrentBuildLimit: 1,
+            environmentVariables: {
+                MULTIPLICATION_API_URL: testStage.multiplicationApiUrl,
+            }
         });
     }
 }

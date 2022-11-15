@@ -2,7 +2,6 @@ const axios = require('axios');
 
 describe('multiplication', () => {
     it('should return 3', async () => {
-        console.log(process.env.MULTIPLICATION_API_URL);
         const response = await axios.post(process.env.MULTIPLICATION_API_URL, {
             a: 1,
             b: 3,

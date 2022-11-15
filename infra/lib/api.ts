@@ -24,7 +24,7 @@ export class ApplicationAPI extends Construct {
         multiply.addMethod('POST');
 
         this.multiplicationApiUrl = new CfnOutput(this, 'MULTIPLICATION_API_URL', {
-            value: multiplicationApi.url,
+            value: multiplicationApi.url + multiply.path,
         });
     }
 }

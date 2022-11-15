@@ -323,6 +323,100 @@ Object {
             ],
             "Name": "Test",
           },
+          Object {
+            "Actions": Array [
+              Object {
+                "ActionTypeId": Object {
+                  "Category": "Approval",
+                  "Owner": "AWS",
+                  "Provider": "Manual",
+                  "Version": "1",
+                },
+                "Name": "PromoteToProd",
+                "RoleArn": Object {
+                  "Fn::GetAtt": Array [
+                    "PipelineProdPromoteToProdCodePipelineActionRole08AAED6C",
+                    "Arn",
+                  ],
+                },
+                "RunOrder": 1,
+              },
+              Object {
+                "ActionTypeId": Object {
+                  "Category": "Deploy",
+                  "Owner": "AWS",
+                  "Provider": "CloudFormation",
+                  "Version": "1",
+                },
+                "Configuration": Object {
+                  "ActionMode": "CHANGE_SET_REPLACE",
+                  "Capabilities": "CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND",
+                  "ChangeSetName": "PipelineChange",
+                  "RoleArn": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":iam::123456789012:role/cdk-hnb659fds-cfn-exec-role-123456789012-us-east-1",
+                      ],
+                    ],
+                  },
+                  "StackName": "Prod-ComputeStack",
+                  "TemplatePath": "Synth_Output::assembly-MyTestStack-Prod/MyTestStackProdComputeStackB7A3416A.template.json",
+                },
+                "InputArtifacts": Array [
+                  Object {
+                    "Name": "Synth_Output",
+                  },
+                ],
+                "Name": "ComputeStack.Prepare",
+                "RoleArn": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::123456789012:role/cdk-hnb659fds-deploy-role-123456789012-us-east-1",
+                    ],
+                  ],
+                },
+                "RunOrder": 2,
+              },
+              Object {
+                "ActionTypeId": Object {
+                  "Category": "Deploy",
+                  "Owner": "AWS",
+                  "Provider": "CloudFormation",
+                  "Version": "1",
+                },
+                "Configuration": Object {
+                  "ActionMode": "CHANGE_SET_EXECUTE",
+                  "ChangeSetName": "PipelineChange",
+                  "StackName": "Prod-ComputeStack",
+                },
+                "Name": "ComputeStack.Deploy",
+                "RoleArn": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::123456789012:role/cdk-hnb659fds-deploy-role-123456789012-us-east-1",
+                    ],
+                  ],
+                },
+                "RunOrder": 3,
+              },
+            ],
+            "Name": "Prod",
+          },
         ],
       },
       "Type": "AWS::CodePipeline::Pipeline",
@@ -1034,6 +1128,34 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
+    "PipelineProdPromoteToProdCodePipelineActionRole08AAED6C": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::123456789012:root",
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
     "PipelineRoleB27FAA37": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
@@ -1115,6 +1237,16 @@ Object {
                     },
                     ":iam::123456789012:role/cdk-hnb659fds-deploy-role-123456789012-us-east-1",
                   ],
+                ],
+              },
+            },
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "PipelineProdPromoteToProdCodePipelineActionRole08AAED6C",
+                  "Arn",
                 ],
               },
             },
@@ -1516,170 +1648,6 @@ Object {
         "Roles": Array [
           Object {
             "Ref": "PipelineUpdatePipelineSelfMutationRole57E559E8",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "PullRequestD8BB9527": Object {
-      "Properties": Object {
-        "Artifacts": Object {
-          "Type": "NO_ARTIFACTS",
-        },
-        "Cache": Object {
-          "Type": "NO_CACHE",
-        },
-        "ConcurrentBuildLimit": 1,
-        "EncryptionKey": "alias/aws/s3",
-        "Environment": Object {
-          "ComputeType": "BUILD_GENERAL1_SMALL",
-          "Image": "aws/codebuild/standard:1.0",
-          "ImagePullCredentialsType": "CODEBUILD",
-          "PrivilegedMode": false,
-          "Type": "LINUX_CONTAINER",
-        },
-        "ServiceRole": Object {
-          "Fn::GetAtt": Array [
-            "PullRequestRole316C1F6E",
-            "Arn",
-          ],
-        },
-        "Source": Object {
-          "BuildSpec": "{
-  \\"version\\": 0.2,
-  \\"phases\\": {
-    \\"install\\": {
-      \\"commands\\": [
-        \\"n 16\\",
-        \\"node -v\\",
-        \\"npm ci\\"
-      ]
-    },
-    \\"build\\": {
-      \\"commands\\": [
-        \\"npm run test\\"
-      ]
-    }
-  }
-}",
-          "Location": "https://github.com/raminismayilov/cdk-serverless-sfn.git",
-          "ReportBuildStatus": true,
-          "Type": "GITHUB",
-        },
-        "Triggers": Object {
-          "FilterGroups": Array [
-            Array [
-              Object {
-                "Pattern": "PULL_REQUEST_CREATED, PULL_REQUEST_UPDATED, PULL_REQUEST_REOPENED",
-                "Type": "EVENT",
-              },
-              Object {
-                "ExcludeMatchedPattern": true,
-                "Pattern": "refs/heads/master",
-                "Type": "HEAD_REF",
-              },
-            ],
-          ],
-          "Webhook": true,
-        },
-      },
-      "Type": "AWS::CodeBuild::Project",
-    },
-    "PullRequestRole316C1F6E": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "codebuild.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "PullRequestRoleDefaultPolicy3569D1A4": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":logs:us-east-1:123456789012:log-group:/aws/codebuild/",
-                      Object {
-                        "Ref": "PullRequestD8BB9527",
-                      },
-                    ],
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":logs:us-east-1:123456789012:log-group:/aws/codebuild/",
-                      Object {
-                        "Ref": "PullRequestD8BB9527",
-                      },
-                      ":*",
-                    ],
-                  ],
-                },
-              ],
-            },
-            Object {
-              "Action": Array [
-                "codebuild:CreateReportGroup",
-                "codebuild:CreateReport",
-                "codebuild:UpdateReport",
-                "codebuild:BatchPutTestCases",
-                "codebuild:BatchPutCodeCoverages",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:",
-                    Object {
-                      "Ref": "AWS::Partition",
-                    },
-                    ":codebuild:us-east-1:123456789012:report-group/",
-                    Object {
-                      "Ref": "PullRequestD8BB9527",
-                    },
-                    "-*",
-                  ],
-                ],
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "PullRequestRoleDefaultPolicy3569D1A4",
-        "Roles": Array [
-          Object {
-            "Ref": "PullRequestRole316C1F6E",
           },
         ],
       },

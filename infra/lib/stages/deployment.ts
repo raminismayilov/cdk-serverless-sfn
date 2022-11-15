@@ -3,7 +3,7 @@ import { Construct } from 'constructs';
 import { ComputeStack } from "../stacks/compute-stack";
 import { CfnOutput } from "aws-cdk-lib";
 
-export class TestStage extends cdk.Stage {
+export class Deployment extends cdk.Stage {
     public readonly multiplicationApiUrl: CfnOutput;
 
     constructor(scope: Construct, id: string, props: cdk.StageProps) {

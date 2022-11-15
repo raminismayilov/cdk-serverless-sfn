@@ -4,7 +4,8 @@ import {
     BuildSpec, EventAction, FilterGroup, GitHubSourceCredentials, Project, Source
 } from 'aws-cdk-lib/aws-codebuild';
 import { CodeBuildStep, CodePipeline, CodePipelineSource } from "aws-cdk-lib/pipelines";
-import { TestStage } from "../stages/test-stage";
+import { Deployment } from "../stages/deployment";
+import { pipelines } from "aws-cdk-lib";
 
 export class PipelineStack extends cdk.Stack {
     private readonly pipeline: CodePipeline;
@@ -46,7 +47,7 @@ export class PipelineStack extends cdk.Stack {
             synth: synthAction,
         });
 
-        const testStage = new TestStage(this, 'Test', {
+        const testStage = new Deployment(this, 'Test', {
             env: props?.env
         });
 
@@ -61,36 +62,14 @@ export class PipelineStack extends cdk.Stack {
             ]
         });
 
-        const prSpec = BuildSpec.fromObject({
-            version: 0.2,
-            phases: {
-                install: {
-                    commands: ['n 16', 'node -v', 'npm ci'],
-                },
-                build: {
-                    commands: ['npm run test']
-                }
-            }
+        const prodStage = new Deployment(this, 'Prod', {
+            env: props?.env
         });
 
-        const source = Source.gitHub({
-            owner: owner,
-            repo: repo,
-            webhook: true,
-            webhookFilters: [
-                FilterGroup.inEventOf(
-                    EventAction.PULL_REQUEST_CREATED,
-                    EventAction.PULL_REQUEST_UPDATED,
-                    EventAction.PULL_REQUEST_REOPENED,
-                ).andBranchIsNot('master'),
-            ],
-            reportBuildStatus: true,
-        });
-
-        new Project(this, 'PullRequest', {
-            source,
-            buildSpec: prSpec,
-            concurrentBuildLimit: 1,
+        this.pipeline.addStage(prodStage, {
+            pre: [
+                new pipelines.ManualApprovalStep('PromoteToProd'),
+            ]
         });
     }
 }

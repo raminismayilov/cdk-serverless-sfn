@@ -1,3 +1,4 @@
+import path from 'path';
 import { Construct } from 'constructs';
 import {
     aws_lambda as lambda, CfnOutput,
@@ -24,7 +25,7 @@ export class ApplicationAPI extends Construct {
         multiply.addMethod('POST');
 
         this.multiplicationApiUrl = new CfnOutput(this, 'MULTIPLICATION_API_URL', {
-            value: multiplicationApi.url + multiply.path,
+            value: path.join(multiplicationApi.url, multiply.path),
         });
     }
 }

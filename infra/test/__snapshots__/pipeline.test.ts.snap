@@ -1172,6 +1172,8 @@ Object {
   \\"phases\\": {
     \\"build\\": {
       \\"commands\\": [
+        \\"n 16\\",
+        \\"node -v\\",
         \\"npm ci\\",
         \\"npm run test:app\\"
       ]

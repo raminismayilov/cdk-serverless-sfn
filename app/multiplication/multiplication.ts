@@ -4,6 +4,7 @@
  * @returns e.g. { Payload: { product: 3 } }
  */
 export async function handler(event: any): Promise<any> {
+    console.log('event', event);
     const { a, b } = event;
     const product = a * b;
     return { product };

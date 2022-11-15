@@ -1,7 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import {
-    BuildSpec,
+    BuildSpec, EventAction, FilterGroup, GitHubSourceCredentials, Project, Source
 } from 'aws-cdk-lib/aws-codebuild';
 import { CodeBuildStep, CodePipeline, CodePipelineSource } from "aws-cdk-lib/pipelines";
 import { TestStage } from "../stages/test-stage";
@@ -17,7 +17,11 @@ export class PipelineStack extends cdk.Stack {
         const branch = 'master';
         const token = cdk.SecretValue.secretsManager('github-token');
 
-        const pipelineSpec = BuildSpec.fromObject({
+        new GitHubSourceCredentials(this, 'GitHubCreds', {
+            accessToken: token,
+        });
+
+        const buildSpec = BuildSpec.fromObject({
             version: 0.2,
             phases: {
                 install: {
@@ -33,7 +37,7 @@ export class PipelineStack extends cdk.Stack {
             input: CodePipelineSource.gitHub(`${owner}/${repo}`, branch, {
                 authentication: token,
             }),
-            partialBuildSpec: pipelineSpec,
+            partialBuildSpec: buildSpec,
             commands: [],
             primaryOutputDirectory: "infra/cdk.out",
         });
@@ -55,6 +59,38 @@ export class PipelineStack extends cdk.Stack {
                     }
                 })
             ]
+        });
+
+        const prSpec = BuildSpec.fromObject({
+            version: 0.2,
+            phases: {
+                install: {
+                    commands: ['n 16', 'node -v', 'npm ci'],
+                },
+                build: {
+                    commands: ['npm run test']
+                }
+            }
+        });
+
+        const source = Source.gitHub({
+            owner: owner,
+            repo: repo,
+            webhook: true,
+            webhookFilters: [
+                FilterGroup.inEventOf(
+                    EventAction.PULL_REQUEST_CREATED,
+                    EventAction.PULL_REQUEST_UPDATED,
+                    EventAction.PULL_REQUEST_REOPENED,
+                ).andBranchIsNot('master'),
+            ],
+            reportBuildStatus: true,
+        });
+
+        new Project(this, 'PullRequest', {
+            source,
+            buildSpec: prSpec,
+            concurrentBuildLimit: 1,
         });
     }
 }

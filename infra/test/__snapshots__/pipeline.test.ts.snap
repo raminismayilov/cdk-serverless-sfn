@@ -10,6 +10,14 @@ Object {
     },
   },
   "Resources": Object {
+    "GitHubCredsCF889281": Object {
+      "Properties": Object {
+        "AuthType": "PERSONAL_ACCESS_TOKEN",
+        "ServerType": "GITHUB",
+        "Token": "{{resolve:secretsmanager:github-token:SecretString:::}}",
+      },
+      "Type": "AWS::CodeBuild::SourceCredential",
+    },
     "Pipeline9850B417": Object {
       "DependsOn": Array [
         "PipelineRoleDefaultPolicy7BDC1ABB",
@@ -1508,6 +1516,170 @@ Object {
         "Roles": Array [
           Object {
             "Ref": "PipelineUpdatePipelineSelfMutationRole57E559E8",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "PullRequestD8BB9527": Object {
+      "Properties": Object {
+        "Artifacts": Object {
+          "Type": "NO_ARTIFACTS",
+        },
+        "Cache": Object {
+          "Type": "NO_CACHE",
+        },
+        "ConcurrentBuildLimit": 1,
+        "EncryptionKey": "alias/aws/s3",
+        "Environment": Object {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "Image": "aws/codebuild/standard:1.0",
+          "ImagePullCredentialsType": "CODEBUILD",
+          "PrivilegedMode": false,
+          "Type": "LINUX_CONTAINER",
+        },
+        "ServiceRole": Object {
+          "Fn::GetAtt": Array [
+            "PullRequestRole316C1F6E",
+            "Arn",
+          ],
+        },
+        "Source": Object {
+          "BuildSpec": "{
+  \\"version\\": 0.2,
+  \\"phases\\": {
+    \\"install\\": {
+      \\"commands\\": [
+        \\"n 16\\",
+        \\"node -v\\",
+        \\"npm ci\\"
+      ]
+    },
+    \\"build\\": {
+      \\"commands\\": [
+        \\"npm run test\\"
+      ]
+    }
+  }
+}",
+          "Location": "https://github.com/raminismayilov/cdk-serverless-sfn.git",
+          "ReportBuildStatus": true,
+          "Type": "GITHUB",
+        },
+        "Triggers": Object {
+          "FilterGroups": Array [
+            Array [
+              Object {
+                "Pattern": "PULL_REQUEST_CREATED, PULL_REQUEST_UPDATED, PULL_REQUEST_REOPENED",
+                "Type": "EVENT",
+              },
+              Object {
+                "ExcludeMatchedPattern": true,
+                "Pattern": "refs/heads/master",
+                "Type": "HEAD_REF",
+              },
+            ],
+          ],
+          "Webhook": true,
+        },
+      },
+      "Type": "AWS::CodeBuild::Project",
+    },
+    "PullRequestRole316C1F6E": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "codebuild.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "PullRequestRoleDefaultPolicy3569D1A4": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":logs:us-east-1:123456789012:log-group:/aws/codebuild/",
+                      Object {
+                        "Ref": "PullRequestD8BB9527",
+                      },
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":logs:us-east-1:123456789012:log-group:/aws/codebuild/",
+                      Object {
+                        "Ref": "PullRequestD8BB9527",
+                      },
+                      ":*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": Array [
+                "codebuild:CreateReportGroup",
+                "codebuild:CreateReport",
+                "codebuild:UpdateReport",
+                "codebuild:BatchPutTestCases",
+                "codebuild:BatchPutCodeCoverages",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":codebuild:us-east-1:123456789012:report-group/",
+                    Object {
+                      "Ref": "PullRequestD8BB9527",
+                    },
+                    "-*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "PullRequestRoleDefaultPolicy3569D1A4",
+        "Roles": Array [
+          Object {
+            "Ref": "PullRequestRole316C1F6E",
           },
         ],
       },

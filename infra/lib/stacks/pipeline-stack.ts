@@ -46,15 +46,15 @@ export class PipelineStack extends cdk.Stack {
             env: props?.env
         });
 
-        // this.pipeline.addStage(testStage, {
-        //     post: [
-        //         new CodeBuildStep('Test', {
-        //             commands: ['echo "Testing"'],
-        //             envFromCfnOutputs: {
-        //                 MULTIPLICATION_LAMBDA_URL: testStage.multiplicationApiUrl,
-        //             }
-        //         })
-        //     ]
-        // });
+        this.pipeline.addStage(testStage, {
+            post: [
+                new CodeBuildStep('Test', {
+                    commands: ['echo "Testing"'],
+                    envFromCfnOutputs: {
+                        MULTIPLICATION_API_URL: testStage.multiplicationApiUrl,
+                    }
+                })
+            ]
+        });
     }
 }

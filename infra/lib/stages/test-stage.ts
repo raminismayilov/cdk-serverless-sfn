@@ -14,6 +14,6 @@ export class TestStage extends cdk.Stage {
             stageName: id,
         });
 
-        // this.multiplicationApiUrl = computeStack.multiplicationApiUrl;
+        this.multiplicationApiUrl = computeStack.multiplicationApiUrl;
     }
 }

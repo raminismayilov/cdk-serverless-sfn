@@ -1,8 +1,8 @@
 import { App, Environment } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
-import { PipelineStack } from '../lib/pipeline-stack';
-import { ComputeStack } from '../lib/compute-stack';
-import { BillingStack } from '../lib/billing-stack';
+import { PipelineStack } from '../lib/stacks/pipeline-stack';
+import { ComputeStack } from '../lib/stacks/compute-stack';
+import { BillingStack } from '../lib/stacks/billing-stack';
 
 const testEnv = {
     account: '123456789012',

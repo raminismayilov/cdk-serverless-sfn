@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { ComputeStack } from '../lib/compute-stack';
-import { PipelineStack } from '../lib/pipeline-stack';
-import { BillingStack } from "../lib/billing-stack";
+import { ComputeStack } from '../lib/stacks/compute-stack';
+import { PipelineStack } from '../lib/stacks/pipeline-stack';
+import { BillingStack } from "../lib/stacks/billing-stack";
 
 const app = new cdk.App();
 

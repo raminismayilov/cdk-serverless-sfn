@@ -1,20 +1,10 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { Artifact, IStage, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
 import {
-    CloudFormationCreateUpdateStackAction,
-    CodeBuildAction,
-    CodeBuildActionType,
-    GitHubSourceAction,
-} from 'aws-cdk-lib/aws-codepipeline-actions';
-import {
-    BuildEnvironmentVariableType,
     BuildSpec,
-    LinuxBuildImage,
-    PipelineProject,
 } from 'aws-cdk-lib/aws-codebuild';
-import { BillingStack } from "./billing-stack";
 import { CodeBuildStep, CodePipeline, CodePipelineSource } from "aws-cdk-lib/pipelines";
+import { TestStage } from "../stages/test-stage";
 
 interface ServiceEndpoints {
     multiplicationLambdaUrl: string;
@@ -57,5 +47,11 @@ export class PipelineStack extends cdk.Stack {
         this.pipeline = new CodePipeline(this, 'Pipeline', {
             synth: synthAction,
         });
+
+        const testStage = new TestStage(this, 'Test', {
+            env: props?.env
+        });
+
+        this.pipeline.addStage(testStage);
     }
 }

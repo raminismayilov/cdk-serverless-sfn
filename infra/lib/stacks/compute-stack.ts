@@ -19,19 +19,19 @@ export class ComputeStack extends cdk.Stack {
         super(scope, id, props);
 
         const addition = new NodejsFunction(this, 'Addition', {
-            entry: path.join(__dirname, '..', '..', 'app', 'addition', 'addition.ts'),
+            entry: path.join(__dirname, '..', '..', '..', 'app', 'addition', 'addition.ts'),
             runtime: lambda.Runtime.NODEJS_16_X,
             functionName: `${props?.stageName}-addition`,
         });
 
         const square = new NodejsFunction(this, 'Square', {
-            entry: path.join(__dirname, '..', '..', 'app', 'square', 'square.ts'),
+            entry: path.join(__dirname, '..', '..', '..', 'app', 'square', 'square.ts'),
             runtime: lambda.Runtime.NODEJS_16_X,
             functionName: `${props?.stageName}-square`,
         });
 
         const multiplication = new NodejsFunction(this, 'Multiplication', {
-            entry: path.join(__dirname, '..', '..', 'app', 'multiplication', 'multiplication.ts'),
+            entry: path.join(__dirname, '..', '..', '..', 'app', 'multiplication', 'multiplication.ts'),
             runtime: lambda.Runtime.NODEJS_16_X,
             functionName: `${props?.stageName}-multiplication`,
         });

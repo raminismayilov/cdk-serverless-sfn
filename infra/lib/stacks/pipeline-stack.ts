@@ -5,13 +5,6 @@ import {
 } from 'aws-cdk-lib/aws-codebuild';
 import { CodeBuildStep, CodePipeline, CodePipelineSource } from "aws-cdk-lib/pipelines";
 import { TestStage } from "../stages/test-stage";
-import { CodeBuildAction } from "aws-cdk-lib/aws-codepipeline-actions";
-
-interface ServiceEndpoints {
-    multiplicationLambdaUrl: string;
-    additionLambdaUrl: string;
-    squareLambdaUrl: string;
-}
 
 export class PipelineStack extends cdk.Stack {
     private readonly pipeline: CodePipeline;
@@ -57,6 +50,9 @@ export class PipelineStack extends cdk.Stack {
             post: [
                 new CodeBuildStep('Test', {
                     commands: ['echo "Testing"'],
+                    // envFromCfnOutputs: {
+                    //     MULTIPLICATION_LAMBDA_URL: testStage.multiplicationLambdaUrl,
+                    // }
                 })
             ]
         });

@@ -15,7 +15,7 @@ interface ComputeStackProps extends cdk.StackProps {
 
 export class ComputeStack extends cdk.Stack {
 
-    public readonly multiplicationLambdaUrl: string;
+    public readonly multiplicationLambdaUrl: CfnOutput;
 
     constructor(scope: Construct, id: string, props: ComputeStackProps) {
         super(scope, id, props);
@@ -42,7 +42,7 @@ export class ComputeStack extends cdk.Stack {
             authType: lambda.FunctionUrlAuthType.NONE,
         });
 
-        new CfnOutput(this, 'MULTIPLICATION_LAMBDA_URL ', { value: lambdaUrl.url });
+        this.multiplicationLambdaUrl = new CfnOutput(this, 'MULTIPLICATION_LAMBDA_URL', { value: lambdaUrl.url });
 
         const additionStep = new tasks.LambdaInvoke(this, 'Addition Step', {
             lambdaFunction: addition,

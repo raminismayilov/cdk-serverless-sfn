@@ -40,7 +40,7 @@ Object {
                   "Version": "1",
                 },
                 "Configuration": Object {
-                  "Branch": "feature/codepipeline",
+                  "Branch": "feature/codepipe",
                   "OAuthToken": "{{resolve:secretsmanager:github-token:SecretString:::}}",
                   "Owner": "raminismayilov",
                   "PollForSourceChanges": false,
@@ -270,6 +270,7 @@ Object {
                   "StackName": "Test-ComputeStack",
                 },
                 "Name": "ComputeStack.Deploy",
+                "Namespace": "MyTestStackTestComputeStack17C8BDEB",
                 "RoleArn": Object {
                   "Fn::Join": Array [
                     "",
@@ -292,6 +293,7 @@ Object {
                   "Version": "1",
                 },
                 "Configuration": Object {
+                  "EnvironmentVariables": "[{\\"name\\":\\"MULTIPLICATION_LAMBDA_URL\\",\\"type\\":\\"PLAINTEXT\\",\\"value\\":\\"#{MyTestStackTestComputeStack17C8BDEB.MULTIPLICATIONLAMBDAURL}\\"}]",
                   "ProjectName": Object {
                     "Ref": "PipelineTestAE2F21C2",
                   },
@@ -552,7 +554,7 @@ Object {
     },
     \\"build\\": {
       \\"commands\\": [
-        \\"cdk-assets --path \\\\\\"assembly-MyTestStack-Test/MyTestStackTestComputeStack17C8BDEB.assets.json\\\\\\" --verbose publish \\\\\\"0dee9d9cb965e1d18649692c30eb9c7c77e873fbce86f2bf06cb0721fa86aa47:123456789012-us-east-1\\\\\\"\\"
+        \\"cdk-assets --path \\\\\\"assembly-MyTestStack-Test/MyTestStackTestComputeStack17C8BDEB.assets.json\\\\\\" --verbose publish \\\\\\"6a614a4e15cb2e6e3a2adc8258a454a264ab621c1ac3d628031c93ac5ebd6cb8:123456789012-us-east-1\\\\\\"\\"
       ]
     }
   }

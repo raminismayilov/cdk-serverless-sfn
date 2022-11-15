@@ -1,31 +1,35 @@
-import { Lambda, InvokeCommandInput } from '@aws-sdk/client-lambda';
+import { Lambda, InvokeCommandInput, InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 import { fromUtf8, toUtf8 } from '@aws-sdk/util-utf8-node';
 
 describe('multiplication', () => {
-    let lambda: Lambda;
+    let lambda: LambdaClient;
 
     beforeAll(() => {
-        lambda = new Lambda({
-            region: 'eu-central-1',
-            endpoint: process.env.MULTIPLICATION_LAMBDA_URL,
-            runtime: 'nodejs16.x',
+        lambda = new LambdaClient({
+            region: "eu-central-1",
             credentials: {
-                accessKeyId: 'test',
-                secretAccessKey: 'test',
-            },
+                accessKeyId: "",
+                secretAccessKey: ""
+            }
         });
     });
 
     it('should return 3', async () => {
-        const params: InvokeCommandInput = {
-            FunctionName: 'Multiplication',
+        const command = new InvokeCommand({
+            FunctionName: 'Test-multiplication',
             InvocationType: 'RequestResponse',
-            Payload: fromUtf8(JSON.stringify({a: 1, b: 3})),
-        };
+            Payload: fromUtf8(JSON.stringify({a: 1, b: 3} )),
+        });
 
-        const result = await lambda.invoke(params);
+        let result
+        try {
+            result = await lambda.send(command);
+        } catch (e) {
+            console.log(e);
+        }
 
-        expect(result.StatusCode).toEqual(200);
-        expect(JSON.parse(toUtf8(result.Payload!))).toEqual({ product: 3 });
+        expect(result?.StatusCode).toEqual(200);
+        expect(JSON.parse(toUtf8(result?.Payload!))).toEqual({ product: 3 });
+        console.log(JSON.parse(toUtf8(result?.Payload!)))
     }, 10000);
 });

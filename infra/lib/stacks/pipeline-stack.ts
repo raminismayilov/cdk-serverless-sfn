@@ -14,7 +14,7 @@ export class PipelineStack extends cdk.Stack {
 
         const owner = 'raminismayilov';
         const repo = 'cdk-serverless-sfn';
-        const branch = 'feature/codepipeline';
+        const branch = 'feature/codepipe';
         const token = cdk.SecretValue.secretsManager('github-token');
 
         const pipelineSpec = BuildSpec.fromObject({
@@ -50,9 +50,9 @@ export class PipelineStack extends cdk.Stack {
             post: [
                 new CodeBuildStep('Test', {
                     commands: ['echo "Testing"'],
-                    // envFromCfnOutputs: {
-                    //     MULTIPLICATION_LAMBDA_URL: testStage.multiplicationLambdaUrl,
-                    // }
+                    envFromCfnOutputs: {
+                        MULTIPLICATION_LAMBDA_URL: testStage.multiplicationLambdaUrl,
+                    }
                 })
             ]
         });

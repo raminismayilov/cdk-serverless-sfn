@@ -14,6 +14,6 @@ export class TestStage extends cdk.Stage {
             stageName: id,
         });
 
-        // this.multiplicationLambdaUrl = computeStack.multiplicationLambdaUrl;
+        this.multiplicationLambdaUrl = computeStack.multiplicationLambdaUrl;
     }
 }

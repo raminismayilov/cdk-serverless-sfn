@@ -3,7 +3,8 @@ import { Construct } from 'constructs';
 import {
     aws_lambda as lambda,
     aws_stepfunctions as sfn,
-    aws_stepfunctions_tasks as tasks, CfnOutput,
+    aws_stepfunctions_tasks as tasks,
+    CfnOutput,
     Duration,
 } from 'aws-cdk-lib';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
@@ -14,7 +15,6 @@ interface ComputeStackProps extends cdk.StackProps {
 }
 
 export class ComputeStack extends cdk.Stack {
-
     public readonly multiplicationLambdaUrl: CfnOutput;
 
     constructor(scope: Construct, id: string, props: ComputeStackProps) {
@@ -42,7 +42,9 @@ export class ComputeStack extends cdk.Stack {
             authType: lambda.FunctionUrlAuthType.NONE,
         });
 
-        this.multiplicationLambdaUrl = new CfnOutput(this, 'MULTIPLICATION_LAMBDA_URL', { value: lambdaUrl.url });
+        this.multiplicationLambdaUrl = new CfnOutput(this, 'MULTIPLICATION_LAMBDA_URL', {
+            value: lambdaUrl.url,
+        });
 
         const additionStep = new tasks.LambdaInvoke(this, 'Addition Step', {
             lambdaFunction: addition,

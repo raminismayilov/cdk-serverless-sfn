@@ -9,13 +9,14 @@ import {
 } from 'aws-cdk-lib';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import path from 'path';
+import { ApplicationAPI } from "../api";
 
 interface ComputeStackProps extends cdk.StackProps {
     stageName: string;
 }
 
 export class ComputeStack extends cdk.Stack {
-    public readonly multiplicationLambdaUrl: CfnOutput;
+    public readonly multiplicationApiUrl: CfnOutput;
 
     constructor(scope: Construct, id: string, props: ComputeStackProps) {
         super(scope, id, props);
@@ -38,13 +39,10 @@ export class ComputeStack extends cdk.Stack {
             functionName: `${props?.stageName}-multiplication`,
         });
 
-        const lambdaUrl = multiplication.addFunctionUrl({
-            authType: lambda.FunctionUrlAuthType.NONE,
+        const applicationApi = new ApplicationAPI(this, 'ApplicationAPI', {
+            multiplicationService: multiplication,
         });
-
-        this.multiplicationLambdaUrl = new CfnOutput(this, 'MULTIPLICATION_LAMBDA_URL', {
-            value: lambdaUrl.url,
-        });
+        this.multiplicationApiUrl = applicationApi.multiplicationApiUrl;
 
         const additionStep = new tasks.LambdaInvoke(this, 'Addition Step', {
             lambdaFunction: addition,

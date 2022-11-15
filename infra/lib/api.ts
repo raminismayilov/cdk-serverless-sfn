@@ -1,6 +1,6 @@
 import { Construct } from 'constructs';
 import {
-    aws_lambda as lambda,
+    aws_lambda as lambda, CfnOutput,
 } from 'aws-cdk-lib';
 import { LambdaRestApi, LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
 
@@ -9,7 +9,7 @@ interface ApplicationAPIProps {
 }
 
 export class ApplicationAPI extends Construct {
-    public readonly restApi: LambdaRestApi;
+    public readonly multiplicationApiUrl: CfnOutput;
 
     constructor(scope: Construct, id: string, props: ApplicationAPIProps) {
         super(scope, id);
@@ -22,5 +22,9 @@ export class ApplicationAPI extends Construct {
 
         const multiply = multiplicationApi.root.addResource('multiply');
         multiply.addMethod('POST');
+
+        this.multiplicationApiUrl = new CfnOutput(this, 'MULTIPLICATION_API_URL', {
+            value: multiplicationApi.url,
+        });
     }
 }

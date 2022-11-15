@@ -4,7 +4,7 @@ import { ComputeStack } from "../stacks/compute-stack";
 import { CfnOutput } from "aws-cdk-lib";
 
 export class TestStage extends cdk.Stage {
-    public readonly multiplicationLambdaUrl: CfnOutput;
+    public readonly multiplicationApiUrl: CfnOutput;
 
     constructor(scope: Construct, id: string, props: cdk.StageProps) {
         super(scope, id, props);
@@ -14,6 +14,6 @@ export class TestStage extends cdk.Stage {
             stageName: id,
         });
 
-        this.multiplicationLambdaUrl = computeStack.multiplicationLambdaUrl;
+        // this.multiplicationApiUrl = computeStack.multiplicationApiUrl;
     }
 }

@@ -1172,7 +1172,7 @@ Object {
   \\"phases\\": {
     \\"build\\": {
       \\"commands\\": [
-        \\"echo $MULTIPLICATION_API_URL\\",
+        \\"npm ci\\",
         \\"npm run test:app\\"
       ]
     }

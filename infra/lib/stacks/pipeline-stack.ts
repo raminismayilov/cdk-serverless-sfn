@@ -49,7 +49,7 @@ export class PipelineStack extends cdk.Stack {
         this.pipeline.addStage(testStage, {
             post: [
                 new CodeBuildStep('Test', {
-                    commands: ['echo "Testing"'],
+                    commands: ['echo $MULTIPLICATION_API_URL'],
                     envFromCfnOutputs: {
                         MULTIPLICATION_API_URL: testStage.multiplicationApiUrl,
                     }

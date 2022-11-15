@@ -14,7 +14,7 @@ export class PipelineStack extends cdk.Stack {
 
         const owner = 'raminismayilov';
         const repo = 'cdk-serverless-sfn';
-        const branch = 'feature/codepipe';
+        const branch = 'master';
         const token = cdk.SecretValue.secretsManager('github-token');
 
         const pipelineSpec = BuildSpec.fromObject({

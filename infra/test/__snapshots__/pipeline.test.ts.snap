@@ -40,7 +40,7 @@ Object {
                   "Version": "1",
                 },
                 "Configuration": Object {
-                  "Branch": "feature/codepipe",
+                  "Branch": "master",
                   "OAuthToken": "{{resolve:secretsmanager:github-token:SecretString:::}}",
                   "Owner": "raminismayilov",
                   "PollForSourceChanges": false,

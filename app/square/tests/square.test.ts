@@ -1,31 +1,50 @@
-import { Lambda, InvokeCommandInput } from '@aws-sdk/client-lambda';
-import { fromUtf8, toUtf8 } from '@aws-sdk/util-utf8-node';
+import {
+    SFNClient,
+    StartExecutionCommand,
+    StartExecutionCommandInput,
+    DescribeExecutionCommand,
+    DescribeExecutionCommandInput,
+    DescribeExecutionCommandOutput,
+} from '@aws-sdk/client-sfn';
 
-describe('square', () => {
-    let lambda: Lambda;
+async function waitForSfnCompletion(sfn: SFNClient, executionArn: string): Promise<DescribeExecutionCommandOutput> {
+    const descriptionInput: DescribeExecutionCommandInput = {
+        executionArn: executionArn!,
+    };
+    const descriptionOutput = await sfn.send(new DescribeExecutionCommand(descriptionInput));
 
-    beforeAll(() => {
-        lambda = new Lambda({
+    return new Promise((resolve) => {
+        if (descriptionOutput.status === 'SUCCEEDED') {
+            resolve(descriptionOutput);
+        } else {
+            setTimeout(() => {
+                resolve(waitForSfnCompletion(sfn, executionArn));
+            }, 1000);
+        }
+    })
+}
+
+describe('simple state machine', () => {
+    let sfn: SFNClient;
+
+    beforeAll(async () => {
+        sfn = new SFNClient({
             region: 'eu-central-1',
-            endpoint: process.env.SQUARE_LAMBDA_URL,
-            runtime: 'nodejs16.x',
-            credentials: {
-                accessKeyId: 'test',
-                secretAccessKey: 'test',
-            }
         });
     });
 
-    it('should return 16', async () => {
-        const params: InvokeCommandInput = {
-            FunctionName: 'Square',
-            InvocationType: 'RequestResponse',
-            Payload: fromUtf8(JSON.stringify({ sum: 4 })),
+    it('should return 144', async () => {
+        const input: StartExecutionCommandInput = {
+            stateMachineArn: process.env.SIMPLE_STATE_MACHINE_ARN!,
+            input: JSON.stringify({ a: 5, b: 7 }),
         };
 
-        const result = await lambda.invoke(params);
+        const result = await sfn.send(new StartExecutionCommand(input));
+        const executionArn = result.executionArn;
 
-        expect(result.StatusCode).toEqual(200);
-        expect(JSON.parse(toUtf8(result.Payload!))).toEqual({ result: 16 });
-    });
+        const descriptionOutput: DescribeExecutionCommandOutput = await waitForSfnCompletion(sfn, executionArn!);
+
+        expect(descriptionOutput.status).toEqual('SUCCEEDED');
+        expect(descriptionOutput.output).toContain(JSON.stringify({ result: 144 }));
+    }, 20000);
 });

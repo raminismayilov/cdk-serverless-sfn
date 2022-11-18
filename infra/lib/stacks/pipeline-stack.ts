@@ -51,13 +51,22 @@ export class PipelineStack extends cdk.Stack {
             env: props?.env
         });
 
+        const s = new CodeBuildStep('Test', {
+            commands: ['n 16', 'node -v', 'npm ci', 'npm run test:app'],
+            envFromCfnOutputs: {
+                MULTIPLICATION_API_URL: testStage.multiplicationApiUrl,
+                SIMPLE_STATE_MACHINE_ARN: testStage.simpleStateMachineArn,
+            },
+        });
+
         this.pipeline.addStage(testStage, {
             post: [
                 new CodeBuildStep('Test', {
                     commands: ['n 16', 'node -v', 'npm ci', 'npm run test:app'],
                     envFromCfnOutputs: {
                         MULTIPLICATION_API_URL: testStage.multiplicationApiUrl,
-                    }
+                        SIMPLE_STATE_MACHINE_ARN: testStage.simpleStateMachineArn,
+                    },
                 })
             ]
         });

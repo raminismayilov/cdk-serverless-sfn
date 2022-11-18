@@ -5,6 +5,7 @@ import { CfnOutput } from "aws-cdk-lib";
 
 export class Deployment extends cdk.Stage {
     public readonly multiplicationApiUrl: CfnOutput;
+    public readonly simpleStateMachineArn: CfnOutput;
 
     constructor(scope: Construct, id: string, props: cdk.StageProps) {
         super(scope, id, props);
@@ -15,5 +16,6 @@ export class Deployment extends cdk.Stage {
         });
 
         this.multiplicationApiUrl = computeStack.multiplicationApiUrl;
+        this.simpleStateMachineArn = computeStack.simpleStateMachineArn;
     }
 }

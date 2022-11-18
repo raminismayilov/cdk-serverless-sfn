@@ -2,7 +2,7 @@ export default {
     testEnvironment: 'node',
     roots: ['<rootDir>'],
     testMatch: [
-        '**/app/multiplication/tests/*.test.ts',
+        '**/app/**/tests/*.test.ts',
     ],
     preset: 'ts-jest',
     transform: {

@@ -301,7 +301,7 @@ Object {
                   "Version": "1",
                 },
                 "Configuration": Object {
-                  "EnvironmentVariables": "[{\\"name\\":\\"MULTIPLICATION_API_URL\\",\\"type\\":\\"PLAINTEXT\\",\\"value\\":\\"#{MyTestStackTestComputeStack17C8BDEB.ApplicationAPIMULTIPLICATIONAPIURLC640B633}\\"}]",
+                  "EnvironmentVariables": "[{\\"name\\":\\"MULTIPLICATION_API_URL\\",\\"type\\":\\"PLAINTEXT\\",\\"value\\":\\"#{MyTestStackTestComputeStack17C8BDEB.ApplicationAPIMULTIPLICATIONAPIURLC640B633}\\"},{\\"name\\":\\"SIMPLE_STATE_MACHINE_ARN\\",\\"type\\":\\"PLAINTEXT\\",\\"value\\":\\"#{MyTestStackTestComputeStack17C8BDEB.SimpleStateMachineARN}\\"}]",
                   "ProjectName": Object {
                     "Ref": "PipelineTestAE2F21C2",
                   },

@@ -17,6 +17,7 @@ interface ComputeStackProps extends cdk.StackProps {
 
 export class ComputeStack extends cdk.Stack {
     public readonly multiplicationApiUrl: CfnOutput;
+    public readonly simpleStateMachineArn: CfnOutput;
 
     constructor(scope: Construct, id: string, props: ComputeStackProps) {
         super(scope, id, props);
@@ -66,6 +67,10 @@ export class ComputeStack extends cdk.Stack {
             definition,
             timeout: Duration.minutes(5),
             stateMachineName: `${props?.stageName}-simple-state-machine`,
+        });
+
+        this.simpleStateMachineArn = new CfnOutput(this, 'Simple State Machine ARN', {
+            value: simpleStateMachine.stateMachineArn,
         });
     }
 }

@@ -1,31 +1,26 @@
-import path from 'path';
 import { Construct } from 'constructs';
-import {
-    aws_lambda as lambda, CfnOutput,
-} from 'aws-cdk-lib';
-import { LambdaRestApi, LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
+import { aws_lambda as lambda } from 'aws-cdk-lib';
+import { LambdaRestApi, LambdaIntegration, RestApi } from 'aws-cdk-lib/aws-apigateway';
 
-interface ApplicationAPIProps {
-    multiplicationService: lambda.IFunction;
+interface ApiProps {
+    moduleService: lambda.IFunction;
 }
 
-export class ApplicationAPI extends Construct {
-    public readonly multiplicationApiUrl: CfnOutput;
+export class API extends Construct {
+    public readonly api: LambdaRestApi;
 
-    constructor(scope: Construct, id: string, props: ApplicationAPIProps) {
+    constructor(scope: Construct, id: string, props: ApiProps) {
         super(scope, id);
 
-        const multiplicationApi = new LambdaRestApi(this, 'PV_Module_API', {
-            restApiName: 'PV_Module_API',
-            handler: props.multiplicationService,
-            proxy: false,
+        const pvccApi = new RestApi(this, 'PVComponentsCatalogueApi', {
+            restApiName: 'PVComponentsCatalogueApi',
         });
 
-        const multiply = multiplicationApi.root.addResource('multiply');
-        multiply.addMethod('POST');
+        const modules = pvccApi.root.addResource('modules');
+        modules.addMethod('GET', new LambdaIntegration(props.moduleService));
+        modules.addMethod('POST', new LambdaIntegration(props.moduleService));
 
-        this.multiplicationApiUrl = new CfnOutput(this, 'MULTIPLICATION_API_URL', {
-            value: path.join(multiplicationApi.url, multiply.path),
-        });
+        const singleModule = modules.addResource('{id}');
+        singleModule.addMethod('GET', new LambdaIntegration(props.moduleService));
     }
 }

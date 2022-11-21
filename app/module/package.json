@@ -1,5 +1,5 @@
 {
-  "name": "square",
+  "name": "module",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,10 +13,19 @@
     "@aws-sdk/client-lambda": "^3.204.0",
     "@aws-sdk/types": "^3.201.0",
     "@aws-sdk/util-utf8-node": "^3.201.0",
-    "@aws-sdk/client-sfn": "^3.204.0",
+    "@types/aws-lambda": "^8.10.108",
     "@types/jest": "^29.2.2",
     "jest": "^29.2.2",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "@middy/core": "^3.6.2",
+    "@middy/http-error-handler": "^3.6.2",
+    "@middy/http-header-normalizer": "^3.6.2",
+    "@middy/http-json-body-parser": "^3.6.2",
+    "@middy/http-router": "^3.6.2",
+    "knex": "^2.3.0",
+    "pg": "^8.8.0"
   }
 }

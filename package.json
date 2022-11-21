@@ -9,20 +9,10 @@
     "infra"
   ],
   "scripts": {
-    "test": "jest",
-    "test:infra": "cd infra && npm run test",
-    "test:infra-update": "cd infra && npm run test:update",
-    "test:app": "npm run test",
-    "cdk:synth": "cd infra && cdk synth",
     "cdk:bootstrap": "cd infra && cdk bootstrap",
-    "sam-stop": "pkill -f 'sam local'",
-    "sam-start": "sam local start-lambda -t infra/cdk.out/InfraStack.template.json &",
-    "sfn-start-jar": "java -jar StepFunctionsLocal.jar --port 8083 &",
-    "sfn-start": "docker-compose up -d",
-    "sfn-stop": "docker-compose down",
-    "test:lambda": "npm run sam-start && npm run test app/multiplication/tests/multiplication.test.ts && npm run sam-stop",
-    "test:sfn": "npm run sam-start && npm run sfn-start && npm run test",
-    "test:sfn-jar": "npm run sam-start && npm run sfn-start-jar && npm run test"
+    "cdk:synth": "cd infra && cdk synth",
+    "test:infra": "cd infra && npm run test",
+    "test:app": "cd app && npm run test"
   },
   "devDependencies": {
     "axios": "^1.1.3",

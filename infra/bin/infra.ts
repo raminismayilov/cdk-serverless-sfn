@@ -8,8 +8,6 @@ const env = {
     account: '670614417011',
 };
 
-console.log('env', env);
-
 const app = new cdk.App();
 
 const pipelineStack = new PipelineStack(app, 'PipelineStack', {

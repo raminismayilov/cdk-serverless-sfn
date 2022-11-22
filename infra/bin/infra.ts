@@ -13,20 +13,20 @@ const env = {
 
 const app = new cdk.App();
 
-const vpcStack = new VpcStack(app, 'VpcStack');
-
-const databaseStack = new DatabaseStack(app, 'DatabaseStack', {
-    vpc: vpcStack.vpc,
-});
-
-const computeStack = new ComputeStack(app, 'ComputeStack', {
-    vpc: vpcStack.vpc,
-    privateSg: databaseStack.privateSg,
-    rdsCredentials: databaseStack.rdsCredentials,
-    rdsProxy: databaseStack.rdsProxy,
-});
-
-databaseStack.addDependency(vpcStack);
-computeStack.addDependency(databaseStack);
+// const vpcStack = new VpcStack(app, 'VpcStack');
+//
+// const databaseStack = new DatabaseStack(app, 'DatabaseStack', {
+//     vpc: vpcStack.vpc,
+// });
+//
+// const computeStack = new ComputeStack(app, 'ComputeStack', {
+//     vpc: vpcStack.vpc,
+//     privateSg: databaseStack.privateSg,
+//     rdsCredentials: databaseStack.rdsCredentials,
+//     rdsProxy: databaseStack.rdsProxy,
+// });
+//
+// databaseStack.addDependency(vpcStack);
+// computeStack.addDependency(databaseStack);
 
 const pipelineStack = new PipelineStack(app, 'PipelineStack');

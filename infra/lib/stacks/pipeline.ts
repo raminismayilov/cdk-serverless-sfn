@@ -15,7 +15,7 @@ import {
     ManualApprovalStep,
     ShellStep,
 } from 'aws-cdk-lib/pipelines';
-import { pipelines, Stage } from 'aws-cdk-lib';
+import { pipelines, Stage, aws_iam as iam } from 'aws-cdk-lib';
 import { TestStage } from '../stages/test-stage';
 
 export class PipelineStack extends cdk.Stack {
@@ -58,17 +58,28 @@ export class PipelineStack extends cdk.Stack {
             synth: synthAction,
         });
 
-        const testStage = new TestStage(this, 'TestStage', { env: props.env });
-
-        this.pipeline.addStage(testStage, {
-            post: [
-                new CodeBuildStep('Test', {
-                    commands: ['n 16', 'node -v', 'npm ci', 'npm run test:app'],
-                    envFromCfnOutputs: {
-                        API_URL: testStage.apiUrl,
-                    },
-                }),
-            ],
-        });
+        // const testStage = new TestStage(this, 'TestStage', { env: props.env });
+        //
+        // this.pipeline.addStage(testStage, {
+        //     post: [
+        //         new CodeBuildStep('Test', {
+        //             commands: ['n 16', 'node -v', 'npm ci', 'npm run test:app'],
+        //             envFromCfnOutputs: {
+        //                 API_URL: testStage.apiUrl,
+        //             },
+        //             rolePolicyStatements: [
+        //                 new iam.PolicyStatement({
+        //                     actions: ['sts:AssumeRole'],
+        //                     resources: ['*'],
+        //                     conditions: {
+        //                         StringEquals: {
+        //                             'iam:ResourceTag/aws-cdk:bootstrap-role': 'lookup',
+        //                         },
+        //                     },
+        //                 }),
+        //             ],
+        //         }),
+        //     ],
+        // });
     }
 }

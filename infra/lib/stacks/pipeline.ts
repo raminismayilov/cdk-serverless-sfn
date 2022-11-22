@@ -59,5 +59,13 @@ export class PipelineStack extends cdk.Stack {
         });
 
         const testStage = new TestStage(this, 'TestStage', { env: props.env });
+
+        this.pipeline.addStage(testStage, {
+            post: [
+                new CodeBuildStep('Test', {
+                    commands: ['n 16', 'node -v', 'npm ci', 'npm run test:app'],
+                }),
+            ],
+        });
     }
 }

@@ -71,7 +71,14 @@ export class PipelineStack extends cdk.Stack {
                     },
                     env: {
                         REGION: cdk.Stack.of(this).region,
-                    }
+                    },
+                    rolePolicyStatements: [
+                        new iam.PolicyStatement({
+                            effect: iam.Effect.ALLOW,
+                            actions: ['secretsmanager:GetSecretValue'],
+                            resources: ['*'],
+                        }),
+                    ]
                 }),
             ],
         });

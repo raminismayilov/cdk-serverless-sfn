@@ -46,5 +46,9 @@ export class PipelineStack extends cdk.Stack {
             commands: [],
             primaryOutputDirectory: 'infra/cdk.out',
         });
+
+        this.pipeline = new CodePipeline(this, 'Pipeline', {
+            synth: synthAction,
+        });
     }
 }

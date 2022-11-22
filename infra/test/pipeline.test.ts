@@ -8,7 +8,7 @@ const testEnv = {
 };
 
 test('Pipeline Stack', () => {
-    const app = new App();
+    // const app = new App();
 
     // const stack = new PipelineStack(app, 'PipelineTestStack', {
     //     env: testEnv,

@@ -28,3 +28,5 @@ const computeStack = new ComputeStack(app, 'ComputeStack', {
 
 databaseStack.addDependency(vpcStack);
 computeStack.addDependency(databaseStack);
+
+const pipelineStack = new PipelineStack(app, 'PipelineStack');

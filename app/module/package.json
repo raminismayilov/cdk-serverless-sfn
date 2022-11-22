@@ -20,6 +20,7 @@
     "ts-node": "^10.9.1"
   },
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.215.0",
     "@middy/core": "^3.6.2",
     "@middy/http-error-handler": "^3.6.2",
     "@middy/http-header-normalizer": "^3.6.2",

@@ -620,7 +620,7 @@ Object {
     },
     \\"build\\": {
       \\"commands\\": [
-        \\"cdk-assets --path \\\\\\"assembly-PipelineTestStack-TestStage/PipelineTestStackTestStageTestComputeStack50D6E869.assets.json\\\\\\" --verbose publish \\\\\\"c1494570e797e6c90b5fbfc9ababd7b12f8036c1ece022f2f694570f840e1f3f:123456789012-us-east-1\\\\\\"\\"
+        \\"cdk-assets --path \\\\\\"assembly-PipelineTestStack-TestStage/PipelineTestStackTestStageTestComputeStack50D6E869.assets.json\\\\\\" --verbose publish \\\\\\"7d1b1e8b27ce9f8ce2075f417c6da8f3248a2b93e818d4bf0d5d3f7324ff6884:123456789012-us-east-1\\\\\\"\\"
       ]
     }
   }
@@ -708,7 +708,7 @@ Object {
     },
     \\"build\\": {
       \\"commands\\": [
-        \\"cdk-assets --path \\\\\\"assembly-PipelineTestStack-TestStage/PipelineTestStackTestStageTestComputeStack50D6E869.assets.json\\\\\\" --verbose publish \\\\\\"b687565bf04a92f26657e5526184d5776dd40c63a6408e3fbd42bd7f4cebce34:123456789012-us-east-1\\\\\\"\\"
+        \\"cdk-assets --path \\\\\\"assembly-PipelineTestStack-TestStage/PipelineTestStackTestStageTestComputeStack50D6E869.assets.json\\\\\\" --verbose publish \\\\\\"c8c77f8142c83600fcdfb023b766942221b19cfff0cb05ee5a29a41bdb98b8d5:123456789012-us-east-1\\\\\\"\\"
       ]
     }
   }

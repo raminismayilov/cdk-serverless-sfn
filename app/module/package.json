@@ -26,6 +26,7 @@
     "@middy/http-json-body-parser": "^3.6.2",
     "@middy/http-router": "^3.6.2",
     "knex": "^2.3.0",
+    "middy-rds": "^3.0.1",
     "pg": "^8.8.0"
   }
 }

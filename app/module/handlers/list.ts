@@ -1,14 +1,8 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import middy from '@middy/core';
-import { Knex } from 'knex';
-import { initializeKnex } from '../../db/knex';
 
-let knex: Knex;
-
-const list = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    if (!knex) {
-        knex = await initializeKnex();
-    }
+const list = async (event: APIGatewayProxyEvent, context: any): Promise<APIGatewayProxyResult> => {
+    const { knex } = context;
 
     const modules = await knex('modules').select();
 

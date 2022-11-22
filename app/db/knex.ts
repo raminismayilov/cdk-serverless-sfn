@@ -2,7 +2,7 @@ import Knex from 'knex';
 import { EnvironmentVariable, getOrFail, getSecretValue } from '../utils/environment';
 import { MigrationSource } from "./migration-source";
 
-const getDbSecrets = async () => {
+export const getDbSecrets = async () => {
     const secretResp = await getSecretValue(getOrFail(EnvironmentVariable.DB_SECRET_ARN));
 
     if (secretResp) {

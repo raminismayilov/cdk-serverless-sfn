@@ -19,6 +19,7 @@ export class ComputeStack extends Stack {
 
         const api = new API(this, 'Pv', {
             moduleService: services.moduleService,
+            migrationService: services.migrationService,
         });
     }
 }

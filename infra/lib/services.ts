@@ -13,6 +13,7 @@ interface ServicesProps extends StackProps {
 
 export class Services extends Construct {
     public readonly moduleService: NodejsFunction;
+    public readonly migrationService: NodejsFunction;
 
     constructor(scope: Construct, id: string, props: ServicesProps) {
         super(scope, id);
@@ -49,5 +50,13 @@ export class Services extends Construct {
         });
 
         this.moduleService.addToRolePolicy(rdsRole);
+
+        this.migrationService = new NodejsServiceFunction(this, 'MigrationLambda', {
+            ...serviceProps,
+            entry: path.join(__dirname, '..', '..', 'app', 'migrator', 'index.ts'),
+            functionName: 'MigrationLambda',
+        });
+
+        this.migrationService.addToRolePolicy(rdsRole);
     }
 }

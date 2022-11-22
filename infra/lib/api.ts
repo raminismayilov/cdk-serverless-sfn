@@ -4,6 +4,7 @@ import { LambdaRestApi, LambdaIntegration, RestApi } from 'aws-cdk-lib/aws-apiga
 
 interface ApiProps {
     moduleService: lambda.IFunction;
+    migrationService: lambda.IFunction;
 }
 
 export class API extends Construct {
@@ -22,5 +23,8 @@ export class API extends Construct {
 
         const singleModule = modules.addResource('{id}');
         singleModule.addMethod('GET', new LambdaIntegration(props.moduleService));
+
+        const migrate = pvccApi.root.addResource('migrate');
+        migrate.addMethod('POST', new LambdaIntegration(props.migrationService));
     }
 }

@@ -58,9 +58,7 @@ export class PipelineStack extends cdk.Stack {
             synth: synthAction,
         });
 
-        const testStage = new TestStage(this, 'TestStage', {
-            env: props.env
-        });
+        const testStage = new TestStage(this, 'TestStage');
 
         this.pipeline.addStage(testStage, {
             post: [

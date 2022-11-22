@@ -58,14 +58,15 @@ export class PipelineStack extends cdk.Stack {
             synth: synthAction,
         });
 
-        console.log(props.env)
-
         const testStage = new TestStage(this, 'TestStage');
 
         this.pipeline.addStage(testStage, {
             post: [
                 new CodeBuildStep('Test', {
                     commands: ['n 16', 'node -v', 'npm ci', 'npm run test:app'],
+                    envFromCfnOutputs: {
+                        API_URL: testStage.apiUrl,
+                    }
                 }),
             ],
         });

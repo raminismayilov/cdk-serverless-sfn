@@ -4,6 +4,7 @@ import * as cdk from 'aws-cdk-lib';
 import { ComputeStack } from '../lib/stacks/compute';
 import { VpcStack } from '../lib/stacks/vpc';
 import { DatabaseStack } from '../lib/stacks/database';
+import { PipelineStack } from "../lib/stacks/pipeline";
 
 const env = {
     region: process.env.CDK_DEFAULT_REGION,

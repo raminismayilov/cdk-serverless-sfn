@@ -8,11 +8,10 @@ describe('CRUD operations on modules', () => {
     let MODULES_API_URL: string;
 
     beforeAll(async () => {
-        MODULES_API_URL = `https://ph4j4o6cu0.execute-api.eu-central-1.amazonaws.com/prod/modules`;
-        //
-        // knex = await initializeKnex();
-        // await knex('modules').del();
-        const dbRegion = getOrFail(EnvironmentVariable.REGION);
+        MODULES_API_URL = getOrFail(EnvironmentVariable.API_URL) + '/modules';
+
+        knex = await initializeKnex();
+        await knex('modules').del();
     });
 
     it('should create a module', async () => {

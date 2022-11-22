@@ -33,6 +33,5 @@ describe('CRUD operations on modules', () => {
 
         const response = await axios.get(MODULES_API_URL);
         expect(response.status).toBe(200);
-        expect(response.data.body).toBe(5);
     });
 });

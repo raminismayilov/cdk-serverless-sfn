@@ -8,13 +8,20 @@ import {
     Project,
     Source,
 } from 'aws-cdk-lib/aws-codebuild';
-import { CodeBuildStep, CodePipeline, CodePipelineSource } from 'aws-cdk-lib/pipelines';
-import { pipelines } from 'aws-cdk-lib';
+import {
+    CodeBuildStep,
+    CodePipeline,
+    CodePipelineSource,
+    ManualApprovalStep,
+    ShellStep,
+} from 'aws-cdk-lib/pipelines';
+import { pipelines, Stage } from 'aws-cdk-lib';
+import { TestStage } from '../stages/test-stage';
 
 export class PipelineStack extends cdk.Stack {
     private readonly pipeline: CodePipeline;
 
-    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props: cdk.StackProps) {
         super(scope, id, props);
 
         const owner = 'raminismayilov';
@@ -49,6 +56,19 @@ export class PipelineStack extends cdk.Stack {
 
         this.pipeline = new CodePipeline(this, 'Pipeline', {
             synth: synthAction,
+        });
+
+        const testStage = new TestStage(this, 'TestStage', { env: props.env });
+
+        this.pipeline.addStage(testStage, {
+            post: [
+                new CodeBuildStep('Test', {
+                    commands: ['n 16', 'node -v', 'npm ci', 'npm run test:app'],
+                    envFromCfnOutputs: {
+                        API_URL: testStage.apiUrl,
+                    },
+                }),
+            ],
         });
     }
 }

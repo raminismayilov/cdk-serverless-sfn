@@ -1,5 +1,5 @@
 import { Construct } from 'constructs';
-import { aws_lambda as lambda } from 'aws-cdk-lib';
+import { aws_lambda as lambda, CfnOutput } from 'aws-cdk-lib';
 import { LambdaRestApi, LambdaIntegration, RestApi } from 'aws-cdk-lib/aws-apigateway';
 
 interface ApiProps {
@@ -9,6 +9,7 @@ interface ApiProps {
 
 export class API extends Construct {
     public readonly api: LambdaRestApi;
+    public readonly apiUrl: CfnOutput;
 
     constructor(scope: Construct, id: string, props: ApiProps) {
         super(scope, id);
@@ -26,5 +27,9 @@ export class API extends Construct {
 
         const migrate = pvccApi.root.addResource('migrate');
         migrate.addMethod('POST', new LambdaIntegration(props.migrationService));
+
+        this.apiUrl = new CfnOutput(this, 'PVComponentsCatalogueApiUrl', {
+            value: pvccApi.url,
+        });
     }
 }

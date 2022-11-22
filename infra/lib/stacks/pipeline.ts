@@ -66,6 +66,9 @@ export class PipelineStack extends cdk.Stack {
                     commands: ['n 16', 'node -v', 'npm ci', 'npm run test:app'],
                     envFromCfnOutputs: {
                         API_URL: testStage.apiUrl,
+                    },
+                    env: {
+                        REGION: cdk.Stack.of(this).region,
                     }
                 }),
             ],

@@ -1,9 +1,3 @@
-import { GetSecretValueCommand, SecretsManagerClient } from '@aws-sdk/client-secrets-manager';
-
-const secretsManagerClient = new SecretsManagerClient({
-    region: 'eu-central-1',
-});
-
 export enum EnvironmentVariable {
     STAGE = 'STAGE',
     DB_HOST = 'DB_HOST',
@@ -11,6 +5,7 @@ export enum EnvironmentVariable {
     DB_PASSWORD = 'DB_PASSWORD',
     DB_SECRET_ARN = 'DB_SECRET_ARN',
     REGION = 'REGION',
+    API_URL = 'API_URL',
 }
 
 export const getOrFail = (key: EnvironmentVariable): string => {
@@ -20,17 +15,3 @@ export const getOrFail = (key: EnvironmentVariable): string => {
     }
     return value;
 };
-
-
-export const getSecretValue = async (secretId: string) => {
-    const params = {
-        SecretId: secretId,
-    };
-    const data = await secretsManagerClient.send(new GetSecretValueCommand(params));
-    if ('SecretString' in data) {
-        return data.SecretString;
-    } else {
-        const buff = new Buffer(data.SecretBinary as any, "base64");
-        return  buff.toString('ascii');
-    }
-}

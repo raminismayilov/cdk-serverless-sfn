@@ -1,10 +1,10 @@
 import { Construct } from 'constructs';
-import { aws_ec2 as ec2, aws_iam as iam, Stack } from 'aws-cdk-lib';
+import { aws_ec2 as ec2, aws_iam as iam, Stack, StackProps } from 'aws-cdk-lib';
 
 export class VpcStack extends Stack {
     public readonly vpc: ec2.IVpc;
 
-    constructor(scope: Construct, id: string) {
+    constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id);
 
         // VPC with public and private subnets

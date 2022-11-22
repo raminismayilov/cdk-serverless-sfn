@@ -2,7 +2,7 @@ import * as path from 'path';
 import { Construct } from 'constructs';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { NodejsServiceFunction } from './constructs/service';
-import { aws_ec2 as ec2, aws_rds as rds, StackProps, aws_iam as iam, Duration } from 'aws-cdk-lib';
+import { aws_ec2 as ec2, aws_rds as rds, StackProps, Stack, aws_iam as iam, Duration } from 'aws-cdk-lib';
 
 interface ServicesProps extends StackProps {
     vpc: ec2.IVpc;
@@ -25,6 +25,7 @@ export class Services extends Construct {
         });
 
         const environment = {
+            REGION: Stack.of(this).region,
             DB_HOST: props.rdsProxy.endpoint,
             DB_SECRET_ARN: props.rdsCredentials.secretArn,
         };

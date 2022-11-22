@@ -1,7 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import middy from '@middy/core';
-import { Knex } from 'knex';
-import { initializeKnex } from '../../db/knex';
 
 type Module = {
     name: string;

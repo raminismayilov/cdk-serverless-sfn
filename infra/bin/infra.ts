@@ -5,6 +5,11 @@ import { ComputeStack } from '../lib/stacks/compute';
 import { VpcStack } from '../lib/stacks/vpc';
 import { DatabaseStack } from '../lib/stacks/database';
 
+const env = {
+    region: process.env.CDK_DEFAULT_REGION,
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+};
+
 const app = new cdk.App();
 
 const vpcStack = new VpcStack(app, 'VpcStack');

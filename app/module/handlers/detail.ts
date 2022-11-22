@@ -1,7 +1,12 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import middy from '@middy/core';
 
-const detail = async (event: APIGatewayProxyEvent, context: any): Promise<APIGatewayProxyResult> => {
+const detail = async (
+    event: APIGatewayProxyEvent & { pathParameters: { id: string } },
+    context: any
+): Promise<APIGatewayProxyResult> => {
+    console.log(`Detail module event: ${JSON.stringify(event)}`);
+
     const { id } = event.pathParameters;
     const { knex } = context;
 

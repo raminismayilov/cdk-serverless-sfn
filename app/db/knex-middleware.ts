@@ -1,6 +1,7 @@
 import middy from '@middy/core';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { initializeKnex } from './knex';
+import { Knex } from "knex";
 
 const knexMiddleware = (): middy.MiddlewareObj<APIGatewayProxyEvent, APIGatewayProxyResult> => {
     const before: middy.MiddlewareFn<APIGatewayProxyEvent, APIGatewayProxyResult> = async (
@@ -17,9 +18,9 @@ const knexMiddleware = (): middy.MiddlewareObj<APIGatewayProxyEvent, APIGatewayP
     };
 
     const after: middy.MiddlewareFn<APIGatewayProxyEvent, APIGatewayProxyResult> = async (
-        request
+        request: middy.Request<APIGatewayProxyEvent, APIGatewayProxyResult> & { context: { knex?: Knex } }
     ): Promise<void> => {
-        await request.context['knex'].destroy();
+        await request.context['knex']?.destroy();
     };
 
     return {

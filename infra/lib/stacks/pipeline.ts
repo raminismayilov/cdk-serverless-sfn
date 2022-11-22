@@ -58,7 +58,9 @@ export class PipelineStack extends cdk.Stack {
             synth: synthAction,
         });
 
-        const testStage = new TestStage(this, 'TestStage');
+        const testStage = new TestStage(this, 'TestStage', {
+            env: props.env
+        });
 
         this.pipeline.addStage(testStage, {
             post: [
@@ -66,11 +68,11 @@ export class PipelineStack extends cdk.Stack {
                     commands: ['n 16', 'node -v', 'npm ci', 'npm run test:app'],
                     envFromCfnOutputs: {
                         API_URL: testStage.apiUrl,
+                        DB_HOST: testStage.dbHost,
+                        DB_SECRET_ARN: testStage.dbSecretArn,
                     },
                     env: {
                         REGION: cdk.Stack.of(this).region,
-                        DB_HOST: testStage.dbHost,
-                        DB_SECRET_ARN: testStage.dbSecretArn,
                     }
                 }),
             ],

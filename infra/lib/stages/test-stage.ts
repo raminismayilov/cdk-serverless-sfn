@@ -7,8 +7,8 @@ import { ComputeStack } from "../stacks/compute";
 
 export class TestStage extends cdk.Stage {
     public readonly apiUrl: CfnOutput;
-    public readonly dbHost: string;
-    public readonly dbSecretArn: string;
+    public readonly dbHost: CfnOutput;
+    public readonly dbSecretArn: CfnOutput;
 
     constructor(scope: Construct, id: string, props?: cdk.StageProps) {
         super(scope, id, props);
@@ -29,8 +29,8 @@ export class TestStage extends cdk.Stage {
         });
 
         this.apiUrl = computeStack.api.apiUrl;
-        this.dbHost = databaseStack.rdsProxy.endpoint;
-        this.dbSecretArn = databaseStack.rdsCredentials.secretArn;
+        this.dbHost = databaseStack.dbHost;
+        this.dbSecretArn = databaseStack.dbSecretArn;
 
         databaseStack.addDependency(vpcStack);
         computeStack.addDependency(databaseStack);

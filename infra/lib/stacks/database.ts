@@ -5,7 +5,7 @@ import {
     Duration,
     StackProps,
     Stack,
-    aws_iam as iam
+    aws_iam as iam, CfnOutput
 } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
@@ -17,6 +17,9 @@ export class DatabaseStack extends Stack {
     public readonly privateSg: ec2.SecurityGroup;
     public readonly rdsCredentials: rds.DatabaseSecret;
     public readonly rdsProxy: rds.DatabaseProxy;
+
+    public readonly dbHost: CfnOutput;
+    public readonly dbSecretArn: CfnOutput;
 
     constructor(scope: Construct, id: string, props: DatabaseStackProps) {
         super(scope, id, props);
@@ -102,6 +105,14 @@ export class DatabaseStack extends Stack {
             privateDnsEnabled: true,
             subnets: { subnetType: ec2.SubnetType.PRIVATE_ISOLATED },
             securityGroups: [this.privateSg],
+        });
+
+        this.dbHost = new CfnOutput(this, 'RdsProxyEndpoint', {
+            value: this.rdsProxy.endpoint,
+        });
+
+        this.dbSecretArn = new CfnOutput(this, 'RdsCredentialsSecretArn', {
+            value: this.rdsCredentials.secretArn,
         });
     }
 }

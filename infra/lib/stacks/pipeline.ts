@@ -69,6 +69,8 @@ export class PipelineStack extends cdk.Stack {
                     },
                     env: {
                         REGION: cdk.Stack.of(this).region,
+                        DB_HOST: testStage.dbHost,
+                        DB_SECRET_ARN: testStage.dbSecretArn,
                     }
                 }),
             ],

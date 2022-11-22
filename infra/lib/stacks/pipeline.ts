@@ -58,28 +58,28 @@ export class PipelineStack extends cdk.Stack {
             synth: synthAction,
         });
 
-        // const testStage = new TestStage(this, 'TestStage', { env: props.env });
-        //
-        // this.pipeline.addStage(testStage, {
-        //     post: [
-        //         new CodeBuildStep('Test', {
-        //             commands: ['n 16', 'node -v', 'npm ci', 'npm run test:app'],
-        //             envFromCfnOutputs: {
-        //                 API_URL: testStage.apiUrl,
-        //             },
-        //             rolePolicyStatements: [
-        //                 new iam.PolicyStatement({
-        //                     actions: ['sts:AssumeRole'],
-        //                     resources: ['*'],
-        //                     conditions: {
-        //                         StringEquals: {
-        //                             'iam:ResourceTag/aws-cdk:bootstrap-role': 'lookup',
-        //                         },
-        //                     },
-        //                 }),
-        //             ],
-        //         }),
-        //     ],
-        // });
+        const testStage = new TestStage(this, 'TestStage', { env: props.env });
+
+        this.pipeline.addStage(testStage, {
+            post: [
+                new CodeBuildStep('Test', {
+                    commands: ['n 16', 'node -v', 'npm ci', 'npm run test:app'],
+                    envFromCfnOutputs: {
+                        API_URL: testStage.apiUrl,
+                    },
+                    rolePolicyStatements: [
+                        new iam.PolicyStatement({
+                            actions: ['sts:AssumeRole'],
+                            resources: ['*'],
+                            conditions: {
+                                StringEquals: {
+                                    'iam:ResourceTag/aws-cdk:bootstrap-role': 'lookup',
+                                },
+                            },
+                        }),
+                    ],
+                }),
+            ],
+        });
     }
 }

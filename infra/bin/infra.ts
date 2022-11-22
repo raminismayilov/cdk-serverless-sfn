@@ -4,9 +4,11 @@ import * as cdk from 'aws-cdk-lib';
 import { PipelineStack } from '../lib/stacks/pipeline';
 
 const env = {
-    region: process.env.CDK_DEFAULT_REGION,
-    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: 'eu-central-1',
+    account: '670614417011',
 };
+
+console.log('env', env);
 
 const app = new cdk.App();
 

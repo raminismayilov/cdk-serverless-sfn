@@ -9,10 +9,10 @@ const testEnv = {
 
 test('Pipeline Stack', () => {
     const app = new App();
-//
-//     const stack = new PipelineStack(app, 'PipelineTestStack', {
-//         env: testEnv,
-//     });
-//
-//     expect(Template.fromStack(stack).toJSON()).toMatchSnapshot();
+
+    // const stack = new PipelineStack(app, 'PipelineTestStack', {
+    //     env: testEnv,
+    // });
+    //
+    // expect(Template.fromStack(stack).toJSON()).toMatchSnapshot();
 });

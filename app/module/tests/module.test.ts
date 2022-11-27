@@ -15,6 +15,7 @@ describe('CRUD operations on modules', () => {
     });
 
     it('should create a module', async () => {
+        console.log('MODULES_API_URL', MODULES_API_URL);
         let response
         try {
             response = await axios.post(MODULES_API_URL, {

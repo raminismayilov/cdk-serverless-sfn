@@ -8,7 +8,7 @@ export class VpcStack extends Stack {
         super(scope, id);
 
         // VPC with public and private subnets
-        this.vpc = new ec2.Vpc(this, 'serverless-app', {
+        this.vpc = new ec2.Vpc(this, 'PvccVpc', {
             cidr: '10.0.0.0/20',
             natGateways: 0,
             maxAzs: 2,

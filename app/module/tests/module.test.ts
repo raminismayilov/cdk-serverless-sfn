@@ -15,12 +15,17 @@ describe('CRUD operations on modules', () => {
     });
 
     it('should create a module', async () => {
-        const response = await axios.post(MODULES_API_URL, {
-            name: 'Test Module',
-            description: 'Test Description',
-        });
+        let response
+        try {
+            response = await axios.post(MODULES_API_URL, {
+                name: 'Test Module',
+                description: 'Test Description',
+            });
+        } catch(err) {
+            console.error(err);
+        }
 
-        expect(response.status).toBe(201);
+        expect(response?.status).toBe(201);
     });
 
     it('should list modules', async () => {

@@ -2,20 +2,14 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import {
     BuildSpec,
-    EventAction,
-    FilterGroup,
     GitHubSourceCredentials,
-    Project,
-    Source,
 } from 'aws-cdk-lib/aws-codebuild';
 import {
     CodeBuildStep,
     CodePipeline,
     CodePipelineSource,
-    ManualApprovalStep,
-    ShellStep,
 } from 'aws-cdk-lib/pipelines';
-import { pipelines, Stage, aws_iam as iam } from 'aws-cdk-lib';
+import { aws_iam as iam } from 'aws-cdk-lib';
 import { TestStage } from '../stages/test-stage';
 
 export class PipelineStack extends cdk.Stack {

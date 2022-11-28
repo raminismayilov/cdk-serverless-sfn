@@ -7,12 +7,15 @@ import { Knex } from 'knex';
 describe('CRUD operations on modules', () => {
     let knex: Knex;
     let MODULES_API_URL: string;
+    let MIGRATION_API_URL: string;
 
     beforeAll(async () => {
         MODULES_API_URL = path.join(getOrFail(EnvironmentVariable.API_URL), 'modules');
+        MIGRATION_API_URL = path.join(getOrFail(EnvironmentVariable.API_URL), 'migrate');
 
-        // knex = await initializeKnex();
-        // await knex('modules').del();
+        await axios.post(MIGRATION_API_URL, {
+            type: 'latest',
+        });
     });
 
     it('should create a module', async () => {

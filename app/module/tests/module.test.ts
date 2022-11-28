@@ -8,7 +8,7 @@ describe('CRUD operations on modules', () => {
     let MODULES_API_URL: string;
 
     beforeAll(async () => {
-        MODULES_API_URL = getOrFail(EnvironmentVariable.API_URL) + '/modules';
+        MODULES_API_URL = getOrFail(EnvironmentVariable.API_URL) + 'modules';
 
         knex = await initializeKnex();
         await knex('modules').del();

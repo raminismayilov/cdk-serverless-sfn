@@ -1,5 +1,6 @@
-import { EnvironmentVariable, getOrFail } from '../../utils/environment';
+import * as path from 'path';
 import axios from 'axios';
+import { EnvironmentVariable, getOrFail } from '../../utils/environment';
 import { initializeKnex } from '../../db/knex';
 import { Knex } from 'knex';
 
@@ -8,14 +9,13 @@ describe('CRUD operations on modules', () => {
     let MODULES_API_URL: string;
 
     beforeAll(async () => {
-        MODULES_API_URL = getOrFail(EnvironmentVariable.API_URL) + 'modules';
+        MODULES_API_URL = path.join(getOrFail(EnvironmentVariable.API_URL), 'modules');
 
-        knex = await initializeKnex();
-        await knex('modules').del();
+        // knex = await initializeKnex();
+        // await knex('modules').del();
     });
 
     it('should create a module', async () => {
-        console.log('MODULES_API_URL', MODULES_API_URL);
         let response
         try {
             response = await axios.post(MODULES_API_URL, {
